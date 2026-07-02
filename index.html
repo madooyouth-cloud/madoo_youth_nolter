@@ -34,109 +34,71 @@
             background-image: radial-gradient(#ff8dab 20%, transparent 20%), radial-gradient(#ff8dab 20%, transparent 20%);
             background-size: 40px 40px;
             background-position: 0 0, 20px 20px;
-            margin: 0;
-            padding: 10px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
+            margin: 0; padding: 10px; min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            overflow-x: hidden; position: relative;
         }
 
         .notebook-container {
-            width: 100%;
-            max-width: 1100px;
-            height: 82vh;
-            min-height: 560px;
-            max-height: 730px;
-            background-color: var(--notebook-yellow);
-            border: clamp(4px, 0.6vw, 6px) solid var(--border-dark);
-            border-radius: 30px;
-            box-shadow: 10px 10px 0px var(--border-dark);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            width: 100%; max-width: 1100px; height: 85vh; min-height: 580px; max-height: 740px;
+            background-color: var(--notebook-yellow); border: clamp(4px, 0.6vw, 6px) solid var(--border-dark);
+            border-radius: 30px; box-shadow: 10px 10px 0px var(--border-dark);
+            position: relative; display: flex; flex-direction: column; overflow: hidden;
             animation: notebook-enter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
 
         .progress-ribbon {
-            background-color: var(--border-dark);
-            padding: 12px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            border-bottom: clamp(4px, 0.6vw, 6px) solid var(--border-dark);
-            font-size: clamp(18px, 2vw, 24px);
+            background-color: var(--border-dark); padding: 12px 5%;
+            display: flex; justify-content: space-between; align-items: center; color: white;
+            border-bottom: clamp(4px, 0.6vw, 6px) solid var(--border-dark); font-size: clamp(18px, 2vw, 24px);
         }
 
         .progress-dots { display: flex; gap: 8px; }
         .dot {
-            width: clamp(14px, 1.5vw, 20px);
-            height: clamp(14px, 1.5vw, 20px);
-            border: 2px solid white;
-            border-radius: 50%;
-            background-color: transparent;
-            transition: all 0.3s ease;
+            width: clamp(14px, 1.5vw, 20px); height: clamp(14px, 1.5vw, 20px);
+            border: 2px solid white; border-radius: 50%; background-color: transparent; transition: all 0.3s ease;
         }
         .dot.active { background-color: var(--kitsch-pink); transform: scale(1.2); border-color: var(--kitsch-pink); }
         .dot.completed { background-color: var(--kitsch-green); border-color: var(--kitsch-green); }
 
         .step-viewport { flex-grow: 1; position: relative; width: 100%; height: calc(100% - 130px); }
         .step-page {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            padding: clamp(15px, 3vw, 40px) clamp(20px, 4vw, 50px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            display: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            padding: clamp(15px, 2.5vw, 35px) clamp(20px, 4vw, 50px);
+            display: flex; flex-direction: column; justify-content: space-between; display: none;
         }
         .step-page.active { display: flex; }
 
-        .kitsch-title {
-            font-size: clamp(26px, 4.2vw, 46px);
-            line-height: 1.2;
-            color: var(--border-dark);
-            margin: 0 0 8px 0;
-            text-shadow: 2px 2px 0px white;
-        }
-        .kitsch-subtitle { font-size: clamp(15px, 2vw, 22px); color: #555; margin-bottom: 15px; }
+        .kitsch-title { font-size: clamp(24px, 4vw, 42px); line-height: 1.2; color: var(--border-dark); margin: 0 0 6px 0; text-shadow: 2px 2px 0px white; }
+        .kitsch-subtitle { font-size: clamp(14px, 1.8vw, 20px); color: #555; margin-bottom: 12px; }
 
         .welcome-hero { display: flex; flex-direction: row; align-items: center; justify-content: space-between; height: 100%; gap: 20px; }
         .welcome-left { flex: 1.2; width: 100%; }
         .welcome-right { flex: 0.8; display: flex; justify-content: center; align-items: center; }
 
         .doit-mascot-wrapper {
-            position: relative;
-            width: clamp(180px, 28vw, 320px);
-            height: clamp(180px, 28vw, 320px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative; width: clamp(160px, 26vw, 300px); height: clamp(160px, 26vw, 300px);
+            display: flex; justify-content: center; align-items: center;
             animation: bounce 1.8s infinite alternate cubic-bezier(0.445, 0.05, 0.55, 0.95);
         }
         .doit-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(4px 4px 0px var(--border-dark)); }
 
         .badge-10th {
             background-color: var(--kitsch-pink); color: white; padding: 4px 12px;
-            font-size: clamp(16px, 1.8vw, 24px); border-radius: 40px; border: 3px solid var(--border-dark);
+            font-size: clamp(14px, 1.6vw, 22px); border-radius: 40px; border: 3px solid var(--border-dark);
             display: inline-block; transform: rotate(-5deg); margin-bottom: 10px; box-shadow: 3px 3px 0 var(--border-dark);
         }
 
         .kitsch-input {
-            width: 100%; max-width: 500px; padding: clamp(12px, 2vw, 20px) clamp(15px, 2.5vw, 25px);
-            font-size: clamp(20px, 3vw, 32px); border: 4px solid var(--border-dark); border-radius: 20px;
+            width: 100%; max-width: 500px; padding: clamp(12px, 2vw, 18px) clamp(15px, 2.5vw, 22px);
+            font-size: clamp(18px, 2.8vw, 28px); border: 4px solid var(--border-dark); border-radius: 20px;
             background-color: white; box-shadow: 5px 5px 0px var(--border-dark); outline: none;
         }
 
+        /* 스크롤 그리드 레이아웃 */
         .grid-wrapper {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px; overflow-y: auto; flex-grow: 1; padding: 5px; margin-bottom: 10px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px; overflow-y: auto; flex-grow: 1; padding: 5px; margin-bottom: 5px;
         }
 
         .kitsch-card {
@@ -152,10 +114,7 @@
         .kitsch-card:nth-child(6) { background-color: #e8f7ff; }
         .kitsch-card:nth-child(7) { background-color: #fff0f6; }
 
-        .card-title {
-            font-size: clamp(20px, 2.2vw, 24px); font-weight: bold;
-            border-bottom: 3px solid var(--border-dark); padding-bottom: 2px; width: 100%; text-align: center;
-        }
+        .card-title { font-size: clamp(18px, 2vw, 22px); font-weight: bold; border-bottom: 3px solid var(--border-dark); padding-bottom: 2px; width: 100%; text-align: center; }
 
         .counter-row {
             width: 100%; display: flex; align-items: center; justify-content: space-between;
@@ -163,34 +122,42 @@
         }
         .counter-controls { display: flex; align-items: center; gap: 8px; }
         .counter-btn {
-            width: 28px; height: 28px; border-radius: 8px; border: 2px solid var(--border-dark);
-            display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 16px; font-weight: bold;
+            width: 26px; height: 26px; border-radius: 6px; border: 2px solid var(--border-dark);
+            display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 15px; font-weight: bold;
         }
         .counter-btn.minus { background-color: #ff8787; }
         .counter-btn.plus { background-color: #8ce99a; }
-        .count-val { font-size: 18px; font-weight: bold; width: 20px; text-align: center; font-family: 'Fredoka'; }
+        .count-val { font-size: 16px; font-weight: bold; width: 18px; text-align: center; font-family: 'Fredoka'; }
+
+        /* 신규 추가: 카드 하단 지역 분배 선택기 구역 */
+        .card-region-selector-zone {
+            width: 100%; display: flex; flex-direction: column; gap: 4px; margin-top: 4px; border-top: 1px dashed #ccc; padding-top: 6px;
+        }
+        .region-select-row {
+            display: flex; align-items: center; justify-content: space-between; width: 100%; font-size: 14px; background: rgba(255,255,255,0.7); padding: 3px 6px; border-radius: 8px; border: 1px solid #ddd;
+        }
+        .region-select-row select {
+            font-size: 13px; font-family: 'Jua'; padding: 2px 4px; border: 2px solid var(--border-dark); border-radius: 6px; outline: none; background: white;
+        }
 
         .status-sticker {
-            position: absolute; right: 3%; top: 20px; border: 4px solid var(--border-dark); border-radius: 50%;
-            width: clamp(80px, 11vw, 110px); height: clamp(80px, 11vw, 110px);
+            position: absolute; right: 3%; top: 15px; border: 4px solid var(--border-dark); border-radius: 50%;
+            width: clamp(80px, 10vw, 105px); height: clamp(80px, 10vw, 105px);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            box-shadow: 4px 4px 0 var(--border-dark); z-index: 10;
+            box-shadow: 4px 4px 0 var(--border-dark); z-index: 10; background-color: var(--kitsch-yellow); transform: rotate(-10deg);
         }
-        .status-sticker.yellow { background-color: var(--kitsch-yellow); transform: rotate(-10deg); }
-        .status-sticker.blue { background-color: var(--kitsch-blue); transform: rotate(8deg); right: 4%; }
-
-        .status-sticker span { font-size: clamp(10px, 1.2vw, 13px); color: #333; font-weight: bold; }
-        .status-sticker strong { font-size: clamp(22px, 3vw, 30px); font-family: 'Fredoka'; }
+        .status-sticker span { font-size: clamp(10px, 1.1vw, 12px); color: #333; font-weight: bold; }
+        .status-sticker strong { font-size: clamp(20px, 2.8vw, 28px); font-family: 'Fredoka'; }
 
         .receipt-container { display: flex; flex-direction: row; justify-content: space-between; align-items: center; height: 100%; gap: clamp(15px, 3vw, 40px); overflow-y: auto; }
         .receipt-paper { background: white; border: 4px solid var(--border-dark); box-shadow: 6px 6px 0 var(--border-dark); border-radius: 15px; padding: 20px; flex: 1.2; width: 100%; max-height: 100%; overflow-y: auto; }
-        .receipt-row { display: flex; justify-content: space-between; font-size: clamp(18px, 2.4vw, 24px); margin-bottom: 8px; border-bottom: 2px dashed #ccc; padding-bottom: 4px; }
+        .receipt-row { display: flex; justify-content: space-between; font-size: clamp(16px, 2.2vw, 22px); margin-bottom: 6px; border-bottom: 2px dashed #ccc; padding-bottom: 4px; }
         .receipt-row em { color: var(--kitsch-pink); font-style: normal; font-weight: bold; }
-        .receipt-sub-list { font-size: clamp(14px, 1.8vw, 17px); color: #555; padding-left: 10px; margin-bottom: 6px; line-height: 1.4; }
+        .receipt-sub-list { font-size: clamp(13px, 1.6vw, 16px); color: #555; padding-left: 10px; margin-bottom: 6px; line-height: 1.4; max-height: 180px; overflow-y: auto; }
         .receipt-summary-right { flex: 0.8; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
         .footer-action-bar { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-top: 6px solid var(--border-dark); background-color: white; }
-        .nav-btn { padding: clamp(10px, 1.5vw, 14px) clamp(20px, 3vw, 35px); font-size: clamp(18px, 2.2vw, 24px); border: 4px solid var(--border-dark); border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 4px 4px 0 var(--border-dark); }
+        .nav-btn { padding: clamp(10px, 1.4vw, 14px) clamp(18px, 2.8vw, 32px); font-size: clamp(16px, 2vw, 22px); border: 4px solid var(--border-dark); border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 4px 4px 0 var(--border-dark); }
         .nav-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--border-dark); }
         .btn-back { background-color: #e0e0e0; }
         .btn-next { background-color: var(--kitsch-orange); color: white; }
@@ -211,7 +178,7 @@
             body { padding: 5px; }
             .notebook-container { height: 92vh; border-radius: 20px; }
             .welcome-hero { flex-direction: column-reverse; justify-content: center; gap: 10px; }
-            .grid-wrapper { grid-template-columns: repeat(2, 1fr); max-height: 290px; }
+            .grid-wrapper { grid-template-columns: 1fr; max-height: 310px; }
             .status-sticker { top: 5px; right: 5px; }
             .receipt-container { flex-direction: column; }
             .receipt-summary-right { display: none; }
@@ -232,7 +199,6 @@
                 <div class="dot active" id="dot1"></div>
                 <div class="dot" id="dot2"></div>
                 <div class="dot" id="dot3"></div>
-                <div class="dot" id="dot4"></div>
             </div>
         </div>
 
@@ -254,11 +220,11 @@
                 </div>
             </div>
 
-            <!-- STEP 2: 인원수부터 먼저 편하게 체크 (아이들이 가장 익숙한 단계) -->
+            <!-- STEP 2: 인원수 입력 및 하단 자동 연동 지역 선택 (완벽 퓨전 매칭 방식) -->
             <div class="step-page" id="step2">
                 <div>
                     <h1 class="kitsch-title">누구누구 같이 왔어?</h1>
-                    <p class="kitsch-subtitle">너 자신을 포함해서 같이 온 인원수를 전부 체크해줘! 👥</p>
+                    <p class="kitsch-subtitle">같이 온 인원수를 올리면, 그 아래에 지역구를 고르는 칸이 나타나! 👥</p>
                 </div>
                 <div class="status-sticker yellow">
                     <span>총 인원</span>
@@ -267,31 +233,15 @@
                 <div class="grid-wrapper" id="ageGrid"></div>
             </div>
 
-            <!-- STEP 3: 마지막 지역 체크 (인원 분배식 배치) -->
+            <!-- STEP 3: 정밀 체크인 영수증 확인창 -->
             <div class="step-page" id="step3">
-                <div>
-                    <h1 class="kitsch-title">어느 지역구에서 왔어?</h1>
-                    <p class="kitsch-subtitle">위에서 입력한 총 인원만큼 지역구 인원을 나누어 체크해줘! 📍</p>
-                </div>
-                <div class="status-sticker blue">
-                    <span>남은 인원</span>
-                    <strong id="remainingCountDisplay">0</strong>
-                </div>
-                <div class="grid-wrapper" id="regionGrid"></div>
-            </div>
-
-            <!-- STEP 4: 최종 영수증 단계 -->
-            <div class="step-page" id="step4">
                 <div class="receipt-container">
                     <div class="receipt-paper">
-                        <h1 class="kitsch-title" style="font-size: clamp(24px, 3vw, 36px); text-align:center; margin-bottom:15px;">체크인 영수증 🧾</h1>
+                        <h1 class="kitsch-title" style="font-size: clamp(22px, 3vw, 32px); text-align:center; margin-bottom:12px;">체크인 영수증 🧾</h1>
                         <div class="receipt-row"><span>대표자</span><em id="finalLeader">---</em></div>
                         
-                        <div class="receipt-row" style="margin-bottom:2px; border:none; color:var(--kitsch-pink);"><span>실적 연령대 통계</span></div>
-                        <div class="receipt-sub-list" id="finalAgeDetails"></div>
-
-                        <div class="receipt-row" style="margin-bottom:2px; border:none; color:var(--kitsch-blue);"><span>지역구 통계</span></div>
-                        <div class="receipt-sub-list" id="finalRegionDetails"></div>
+                        <div class="receipt-row" style="margin-bottom:2px; border:none; color:var(--kitsch-pink);"><span>정밀 연령 및 지역 매칭 명단</span></div>
+                        <div class="receipt-sub-list" id="finalDetailsList" style="background:#fbfcfd; padding:10px; border:1px dashed #aaa; border-radius:10px;"></div>
 
                         <div class="receipt-row" style="border-top:3px solid #121212; padding-top:10px; margin-top:10px;"><span>총 멤버 수</span><em id="finalTotal">0 명</em></div>
                     </div>
@@ -299,7 +249,7 @@
                         <div class="doit-mascot-wrapper">
                             <img src="해냈다 두잇.png" alt="두잇 캐릭터" class="doit-img">
                         </div>
-                        <h2 style="font-size: clamp(20px, 2.5vw, 32px); margin-top:15px;">출석 준비 끝! 완벽해!</h2>
+                        <h2 style="font-size: clamp(18px, 2.5vw, 28px); margin-top:15px;">출석 준비 끝! 완벽해!</h2>
                     </div>
                 </div>
             </div>
@@ -315,7 +265,7 @@
         </div>
     </div>
 
-    <!-- 관리자 도크 메뉴 -->
+    <!-- 관리자 독바 -->
     <div class="admin-zone">
         <span>⚙️ 놀터 관리자 메뉴 :</span>
         <button class="admin-btn btn-copy-mode" onclick="checkAdminPassword('copy')">📋 전체 데이터 텍스트 복사</button>
@@ -323,7 +273,7 @@
         <button class="admin-btn btn-clear" onclick="checkAdminPassword('clear')">⚠️ 전체 데이터 초기화</button>
     </div>
 
-    <!-- 텍스트 전송용 모달창 -->
+    <!-- 복사용 모달 -->
     <div class="admin-textarea-modal" id="textDataModal">
         <h3>📋 누적 데이터 복사하기</h3>
         <p>아래 상자 안의 텍스트를 복사해 카톡이나 컴퓨터 메모장에 붙여넣으세요!</p>
@@ -341,95 +291,110 @@
         let totalCheckedPeople = 0;
         
         const ageCategories = ["유아", "초등", "중등", "고등", "대학생", "학교밖", "성인"];
-        const regionCategories = ["덕양구", "일산동구", "일산서구", "기타"];
+        const regionOptions = ["일산동구", "덕양구", "일산서구", "기타"];
 
         const attendanceData = {};
-        const regionData = {};
+        ageCategories.forEach(cat => {
+            attendanceData[cat] = {
+                male: [], // 각 인원 객체 배열 저장: { region: "일산동구" }
+                female: []
+            };
+        });
 
-        ageCategories.forEach(cat => attendanceData[cat] = { male: 0, female: 0 });
-        regionCategories.forEach(reg => regionData[reg] = 0);
-
-        // 스텝 2: 연령 그리드 드로잉
+        // 스텝 2 나이 카드 및 내부 동적 스위치 렌더링
         const ageGrid = document.getElementById('ageGrid');
         ageCategories.forEach(cat => {
             const card = document.createElement('div');
             card.className = 'kitsch-card';
+            card.id = `card-${cat}`;
             card.innerHTML = `
                 <div class="card-title">${cat}</div>
                 <div class="counter-row">
                     <span>남 👦🏻</span>
                     <div class="counter-controls">
-                        <div class="counter-btn minus" onclick="updateAgeCount('${cat}', 'male', -1)">-</div>
+                        <div class="counter-btn minus" onclick="changePersonCount('${cat}', 'male', -1)">-</div>
                         <div class="count-val" id="${cat}-male-val">0</div>
-                        <div class="counter-btn plus" onclick="updateAgeCount('${cat}', 'male', 1)">+</div>
+                        <div class="counter-btn plus" onclick="changePersonCount('${cat}', 'male', 1)">+</div>
                     </div>
                 </div>
                 <div class="counter-row">
                     <span>여 👧🏻</span>
                     <div class="counter-controls">
-                        <div class="counter-btn minus" onclick="updateAgeCount('${cat}', 'female', -1)">-</div>
+                        <div class="counter-btn minus" onclick="changePersonCount('${cat}', 'female', -1)">-</div>
                         <div class="count-val" id="${cat}-female-val">0</div>
-                        <div class="counter-btn plus" onclick="updateAgeCount('${cat}', 'female', 1)">+</div>
+                        <div class="counter-btn plus" onclick="changePersonCount('${cat}', 'female', 1)">+</div>
                     </div>
                 </div>
+                <!-- 하단에 각 한 명씩 지역구를 분배 매칭할 수 있는 컨테이너 스페이스 연동 -->
+                <div class="card-region-selector-zone" id="${cat}-selectors-zone"></div>
             `;
             ageGrid.appendChild(card);
         });
 
-        // 스텝 3: 지역 그리드 드로잉
-        const regionGrid = document.getElementById('regionGrid');
-        regionCategories.forEach(reg => {
-            const card = document.createElement('div');
-            card.className = 'kitsch-card';
-            card.innerHTML = `
-                <div class="card-title" style="font-size:clamp(22px, 2.5vw, 30px);">${reg}</div>
-                <div class="counter-row" style="padding:8px;">
-                    <span>인원수 📍</span>
-                    <div class="counter-controls">
-                        <div class="counter-btn minus" onclick="updateRegionCount('${reg}', -1)">-</div>
-                        <div class="count-val" id="${reg}-val" style="font-size:22px; width:30px;">0</div>
-                        <div class="counter-btn plus" onclick="updateRegionCount('${reg}', 1)">+</div>
-                    </div>
-                </div>
-            `;
-            regionGrid.appendChild(card);
-        });
-
-        function updateAgeCount(category, gender, change) {
-            let current = attendanceData[category][gender];
-            let newValue = current + change;
-            if (newValue < 0) newValue = 0;
-            attendanceData[category][gender] = newValue;
-            document.getElementById(`${category}-${gender}-val`).textContent = newValue;
-            calculateAgeTotal();
+        function changePersonCount(category, gender, change) {
+            let list = attendanceData[category][gender];
+            if (change === 1) {
+                list.push({ region: "일산동구" }); // 기본값 일산동구 배정
+            } else if (change === -1) {
+                if (list.length > 0) list.pop();
+            }
+            
+            document.getElementById(`${category}-${gender}-val`).textContent = list.length;
+            rebuildRegionSelectors(category);
+            calculateTotals();
         }
 
-        function calculateAgeTotal() {
+        // 인원수가 변경될 때 하단에 지역 선택 드롭다운 박스를 동적으로 매칭 생성하는 함수
+        function rebuildRegionSelectors(category) {
+            const zone = document.getElementById(`${category}-selectors-zone`);
+            zone.innerHTML = ""; // 초기화
+
+            // 남자 인원 구별 지정기 추가
+            attendanceData[category].male.forEach((person, idx) => {
+                const row = createSelectRow(category, 'male', idx, person.region);
+                zone.appendChild(row);
+            });
+
+            // 여자 인원 구별 지정기 추가
+            attendanceData[category].female.forEach((person, idx) => {
+                const row = createSelectRow(category, 'female', idx, person.region);
+                zone.appendChild(row);
+            });
+        }
+
+        function createSelectRow(category, gender, idx, currentRegion) {
+            const row = document.createElement('div');
+            row.className = 'region-select-row';
+            
+            const genderTag = gender === 'male' ? '남 👦🏻' : '여 👧🏻';
+            row.innerHTML = `<span>${genderTag}${idx + 1}의 지역:</span>`;
+            
+            const select = document.createElement('select');
+            regionOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                if(opt === currentRegion) option.selected = true;
+                select.appendChild(option);
+            });
+
+            select.onchange = function() {
+                attendanceData[category][gender][idx].region = select.value;
+            };
+            
+            row.appendChild(select);
+            return row;
+        }
+
+        function calculateTotals() {
             let total = 0;
             ageCategories.forEach(cat => {
-                total += attendanceData[cat].male;
-                total += attendanceData[cat].female;
+                total += attendanceData[cat].male.length;
+                total += attendanceData[cat].female.length;
             });
             document.getElementById('totalCountDisplay').textContent = total;
             totalCheckedPeople = total;
             return total;
-        }
-
-        function updateRegionCount(region, change) {
-            let current = regionData[region];
-            let newValue = current + change;
-            if (newValue < 0) newValue = 0;
-            regionData[region] = newValue;
-            document.getElementById(`${region}-val`).textContent = newValue;
-            calculateRegionRemaining();
-        }
-
-        function calculateRegionRemaining() {
-            let currentRegionTotal = 0;
-            regionCategories.forEach(reg => currentRegionTotal += regionData[reg]);
-            let remaining = totalCheckedPeople - currentRegionTotal;
-            document.getElementById('remainingCountDisplay').textContent = remaining;
-            return remaining;
         }
 
         function moveStep(direction) {
@@ -439,16 +404,7 @@
                     if (!name) { alert('대표자 이름을 꼭 입력해줘! 😊'); return; }
                 }
                 if (currentStep === 2) {
-                    if (calculateAgeTotal() === 0) { alert('같이 온 인원을 1명 이상 입력해줘! 👥'); return; }
-                    calculateRegionRemaining();
-                }
-                if (currentStep === 3) {
-                    let currentRegionTotal = 0;
-                    regionCategories.forEach(reg => currentRegionTotal += regionData[reg]);
-                    if (currentRegionTotal !== totalCheckedPeople) {
-                        alert(`인원수가 맞지 않아! 🤨\n\n총 인원은 [ ${totalCheckedPeople}명 ] 인데,\n지금 지역별 인원은 [ ${currentRegionTotal}명 ] 이야. 딱 맞춰줘!`);
-                        return;
-                    }
+                    if (calculateTotals() === 0) { alert('같이 온 인원을 최소 1명 이상 입력해줘야 해! 👥'); return; }
                 }
             }
 
@@ -468,27 +424,29 @@
             if (currentStep === 1) prevBtn.style.visibility = 'hidden';
             else prevBtn.style.visibility = 'visible';
 
-            if (currentStep === 4) {
+            if (currentStep === 3) {
                 document.getElementById('finalLeader').textContent = document.getElementById('leaderName').value;
                 document.getElementById('finalTotal').textContent = totalCheckedPeople + " 명";
 
-                let ageHtml = "";
+                // 영수증에 완벽 1:1 매칭 현황을 요약 텍스트로 드로잉
+                let summaryHtml = "";
                 ageCategories.forEach(cat => {
-                    let m = attendanceData[cat].male;
-                    let f = attendanceData[cat].female;
-                    if(m > 0 || f > 0) ageHtml += `• ${cat}: ${m>0?`남 ${m}명 `:''}${f>0?`여 ${f}명`:''}<br>`;
+                    let localLines = "";
+                    attendanceData[cat].male.forEach((p, i) => {
+                        localLines += `  - 남 ${i+1}번 친구 👦🏻 ➡️ [${p.region}]<br>`;
+                    });
+                    attendanceData[cat].female.forEach((p, i) => {
+                        localLines += `  - 여 ${i+1}번 친구 👧🏻 ➡️ [${p.region}]<br>`;
+                    });
+                    if(localLines) {
+                        summaryHtml += `<strong style="color:var(--kitsch-orange);">• ${cat} 부문</strong><br>${localLines}`;
+                    }
                 });
-                document.getElementById('finalAgeDetails').innerHTML = ageHtml;
-
-                let regHtml = "";
-                regionCategories.forEach(reg => {
-                    if(regionData[reg] > 0) regHtml += `• ${reg}: ${regionData[reg]}명<br>`;
-                });
-                document.getElementById('finalRegionDetails').innerHTML = regHtml;
+                document.getElementById('finalDetailsList').innerHTML = summaryHtml || "입력된 내역 없음";
 
                 nextBtn.className = "nav-btn btn-submit";
                 nextBtn.innerHTML = `최종 제출하기 <i class="fa-solid fa-paper-plane"></i>`;
-                nextBtn.onclick = saveAndReset;
+                nextBtn.onclick = saveAndResetPerfect;
             } else {
                 nextBtn.className = "nav-btn btn-next";
                 nextBtn.innerHTML = `다음 단계로 <i class="fa-solid fa-arrow-right"></i>`;
@@ -496,33 +454,22 @@
             }
         }
 
-        function saveAndReset() {
+        function saveAndResetPerfect() {
             const now = new Date();
             const timestamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
             
-            const newRecord = {
+            const record = {
                 date: timestamp,
                 leader: document.getElementById('leaderName').value.trim(),
                 total: totalCheckedPeople,
-                // 실적 보고에 핵심인 연령 데이터 우선 매핑
-                baby_m: attendanceData["유아"].male, baby_f: attendanceData["유아"].female,
-                elem_m: attendanceData["초등"].male, elem_f: attendanceData["초등"].female,
-                mid_m: attendanceData["중등"].male, mid_f: attendanceData["중등"].female,
-                high_m: attendanceData["고등"].male, high_f: attendanceData["고등"].female,
-                univ_m: attendanceData["대학생"].male, univ_f: attendanceData["대학생"].female,
-                out_m: attendanceData["학교밖"].male, out_f: attendanceData["학교밖"].female,
-                adult_m: attendanceData["성인"].male, adult_f: attendanceData["성인"].female,
-                deogyang: regionData["덕양구"],
-                ilsandong: regionData["일산동구"],
-                ilsanseo: regionData["일산서구"],
-                etc_region: regionData["기타"]
+                raw_payload: JSON.stringify(attendanceData) // 모든 데이터 1:1 구조 압축 저장
             };
 
-            let localHistory = JSON.parse(localStorage.getItem('nolter_final_history')) || [];
-            localHistory.push(newRecord);
-            localStorage.setItem('nolter_final_history', JSON.stringify(localHistory));
+            let localHistory = JSON.parse(localStorage.getItem('nolter_perfect_v2')) || [];
+            localHistory.push(record);
+            localStorage.setItem('nolter_perfect_v2', JSON.stringify(localHistory));
 
-            alert("🎉 놀터 출석 등록 완료되었습니다! 즐거운 시간 보내자고!");
+            alert("🎉 완벽 정밀 매칭 출석 등록 완료! 대시보드에 기록 완료!");
             location.reload();
         }
 
@@ -539,14 +486,35 @@
             }
         }
 
-        // 📊 연령별 인원이 우선적으로 추출되는 깔끔한 엑셀 컴파일 가동
+        // 📊 정밀 매칭용 엑셀 컬럼 자동 분해 빌더 설계
         function buildCsvString() {
-            const data = JSON.parse(localStorage.getItem('nolter_final_history')) || [];
-            if(data.length === 0) return "";
+            const raw = localStorage.getItem('nolter_perfect_v2');
+            if(!raw) return "";
+            const history = JSON.parse(raw);
+            if(history.length === 0) return "";
 
-            let csv = "등록일시,대표자,총원,유아(남),유아(여),초등(남),초등(여),중등(남),중등(여),고등(남),고등(여),대학생(남),대학생(여),학교밖(남),학교밖(여),성인(남),성인(여),덕양구,일산동구,일산서구,기타지역\n";
-            data.forEach(r => {
-                csv += `"${r.date} ","${r.leader}",${r.total},${r.baby_m},${r.baby_f},${r.elem_m},${r.elem_f},${r.mid_m},${r.mid_f},${r.high_m},${r.high_f},${r.univ_m},${r.univ_f},${r.out_m},${r.out_f},${r.adult_m},${r.adult_f},${r.deogyang},${r.ilsandong},${r.ilsanseo},${r.etc_region}\n`;
+            // 통계 실적 보고용 헤더 배치 (연령_성별_구별로 완벽 격리)
+            let csv = "등록일시,대표자,총원";
+            ageCategories.forEach(cat => {
+                regionOptions.forEach(reg => {
+                    csv += `,${cat}_남_${reg},${cat}_여_${reg}`;
+                });
+            });
+            csv += "\n";
+
+            history.forEach(r => {
+                csv += `"${r.date} ","${r.leader}",${r.total}`;
+                const payload = JSON.parse(r.raw_payload);
+                
+                ageCategories.forEach(cat => {
+                    regionOptions.forEach(reg => {
+                        // 해당 구에 해당하는 인원수만 실시간 카운트 파싱
+                        let mCount = payload[cat].male.filter(p => p.region === reg).length;
+                        let fCount = payload[cat].female.filter(p => p.region === reg).length;
+                        csv += `,${mCount},${fCount}`;
+                    });
+                });
+                csv += "\n";
             });
             return csv;
         }
@@ -566,9 +534,9 @@
             textarea.setSelectionRange(0, 99999);
             try {
                 document.execCommand('copy');
-                alert("📋 데이터 복사 완료! 카톡방에 바로 붙여넣기 하시면 됩니다.");
+                alert("📋 정밀 매칭 텍스트 데이터 복사 완료! 카톡에 바로 붙여넣기 하세요.");
             } catch (err) {
-                alert("복사 실패! 상자 안을 직접 전체선택해서 복사해주세요.");
+                alert("자동 복사 실패! 상자 안을 직접 드래그 복사해주세요.");
             }
         }
 
@@ -579,7 +547,7 @@
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.setAttribute("href", URL.createObjectURL(blob));
-            link.setAttribute("download", "놀터_출석부_누적데이터.csv");
+            link.setAttribute("download", "놀터_정밀매칭_출석데이터.csv");
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
@@ -587,8 +555,8 @@
         }
 
         function clearAdminData() {
-            if(confirm("정말로 누적된 데이터를 전부 지울 거야? 복구할 수 없어!")) {
-                localStorage.removeItem('nolter_final_history');
+            if(confirm("정말로 누적된 데이터를 전부 지울 거야? 지워진 데이터는 복구할 수 없어!")) {
+                localStorage.removeItem('nolter_perfect_v2');
                 alert("초기화 완료!");
                 location.reload();
             }
