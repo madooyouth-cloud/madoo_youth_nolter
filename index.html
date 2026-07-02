@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 놀터 출석부</title>
+    <!-- 키치 감성 한글/영문 폰트 불러오기 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* 글로벌 키치 스타일 정의 */
+        :root {
+            --bg-color: #ffd2e0; /* 연분홍 */
+            --notebook-yellow: #fff3cb; /* 레트로 스프링노트 속지색 */
+            --kitsch-pink: #ff5e97;
+            --kitsch-blue: #3bc9db;
+            --kitsch-yellow: #ffd43b;
+            --kitsch-purple: #b197fc;
+            --kitsch-green: #51cf66;
+            --kitsch-orange: #ff922b;
+            --border-dark: #121212;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Jua', 'Gaegu', cursive, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(#ff8dab 20%, transparent 20%),
+                radial-gradient(#ff8dab 20%, transparent 20%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 대형 스프링 노트 컨테이너 */
+        .notebook-container {
+            width: 95%;
+            max-width: 1100px;
+            height: 80vh;
+            max-height: 720px;
+            background-color: var(--notebook-yellow);
+            border: 6px solid var(--border-dark);
+            border-radius: 30px;
+            box-shadow: 15px 15px 0px var(--border-dark);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: notebook-enter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        /* 진척도 표시 바 */
+        .progress-ribbon {
+            background-color: var(--border-dark);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-bottom: 6px solid var(--border-dark);
+            font-size: 24px;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 12px;
+        }
+
+        .dot {
+            width: 20px;
+            height: 20px;
+            border: 3px solid white;
+            border-radius: 50%;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--kitsch-pink);
+            transform: scale(1.3);
+            border-color: var(--kitsch-pink);
+        }
+
+        .dot.completed {
+            background-color: var(--kitsch-green);
+            border-color: var(--kitsch-green);
+        }
+
+        /* 스텝 뷰포트 */
+        .step-viewport {
+            flex-grow: 1;
+            position: relative;
+            width: 100%;
+        }
+
+        .step-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            display: none;
+        }
+
+        .step-page.active {
+            display: flex;
+        }
+
+        /* 키치 타이포그래피 */
+        .kitsch-title {
+            font-size: 46px;
+            color: var(--border-dark);
+            margin: 0 0 10px 0;
+            text-shadow: 3px 3px 0px white;
+        }
+
+        .kitsch-subtitle {
+            font-size: 22px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* 스텝 1: 메인 인트로 */
+        .welcome-hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            gap: 40px;
+        }
+
+        .welcome-left { flex: 1.2; }
+        .welcome-right {
+            flex: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .doit-mascot-wrapper {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: bounce 1.8s infinite alternate cubic-bezier(0.445, 0.05, 0.55, 0.95);
+        }
+
+        .doit-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(4px 4px 0px var(--border-dark));
+        }
+
+        .badge-10th {
+            background-color: var(--kitsch-pink);
+            color: white;
+            padding: 6px 16px;
+            font-size: 24px;
+            border-radius: 40px;
+            border: 3px solid var(--border-dark);
+            display: inline-block;
+            transform: rotate(-5deg);
+            margin-bottom: 15px;
+            box-shadow: 4px 4px 0 var(--border-dark);
+        }
+
+        .kitsch-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px 25px;
+            font-size: 32px;
+            border: 5px solid var(--border-dark);
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 6px 6px 0px var(--border-dark);
+            outline: none;
+        }
+
+        /* 스텝 2 & 스텝 3 공동 그리드 스타일 */
+        .grid-wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            overflow-y: auto;
+            max-height: 360px;
+            padding: 10px;
+        }
+
+        .kitsch-card {
+            background-color: white;
+            border: 4px solid var(--border-dark);
+            border-radius: 20px;
+            padding: 15px 12px;
+            box-shadow: 5px 5px 0px var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .kitsch-card:nth-child(1) { background-color: #fff4f2; }
+        .kitsch-card:nth-child(2) { background-color: #f3f0ff; }
+        .kitsch-card:nth-child(3) { background-color: #e3faf2; }
+        .kitsch-card:nth-child(4) { background-color: #fff9db; }
+        .kitsch-card:nth-child(5) { background-color: #ebfbee; }
+        .kitsch-card:nth-child(6) { background-color: #e8f7ff; }
+        .kitsch-card:nth-child(7) { background-color: #fff0f6; }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 3px solid var(--border-dark);
+            padding-bottom: 3px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .counter-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border: 2px solid var(--border-dark);
+            border-radius: 12px;
+            padding: 6px 10px;
+        }
+
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .counter-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 2px solid var(--border-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .counter-btn.minus { background-color: #ff8787; }
+        .counter-btn.plus { background-color: #8ce99a; }
+
+        .count-val {
+            font-size: 20px;
+            font-weight: bold;
+            width: 25px;
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* 실시간 상태 우측 상단 스티커 */
+        .status-sticker {
+            position: absolute;
+            right: 40px;
+            top: 25px;
+            border: 4px solid var(--border-dark);
+            border-radius: 50%;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 5px 5px 0 var(--border-dark);
+            z-index: 10;
+        }
+        .status-sticker.yellow { background-color: var(--kitsch-yellow); transform: rotate(-10deg); }
+        .status-sticker.blue { background-color: var(--kitsch-blue); transform: rotate(8deg); right: 50px; }
+
+        .status-sticker span { font-size: 13px; color: #333; font-weight: bold; }
+        .status-sticker strong { font-size: 30px; font-family: 'Fredoka'; }
+
+        /* 스텝 4: 영수증 화면 */
+        .receipt-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            gap: 40px;
+        }
+
+        .receipt-paper {
+            background: white;
+            border: 4px solid var(--border-dark);
+            box-shadow: 8px 8px 0 var(--border-dark);
+            border-radius: 15px;
+            padding: 25px;
+            flex: 1.2;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 24px;
+            margin-bottom: 12px;
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 8px;
+        }
+
+        .receipt-row em { color: var(--kitsch-pink); font-style: normal; font-weight: bold; }
+        .receipt-sub-list { font-size: 18px; color: #555; padding-left: 15px; margin-bottom: 10px; }
+
+        /* 하단 컨트롤 바 */
+        .footer-action-bar {
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 6px solid var(--border-dark);
+            background-color: white;
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            font-size: 22px;
+            border: 4px solid var(--border-dark);
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 5px 5px 0 var(--border-dark);
+        }
+
+        .nav-btn:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--border-dark); }
+        .btn-back { background-color: #e0e0e0; }
+        .btn-next { background-color: var(--kitsch-orange); color: white; }
+        .btn-submit { background-color: var(--kitsch-green); color: white; }
+
+        /* 하단 관리자 기능 구역 */
+        .admin-zone {
+            margin-top: 25px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 25px;
+            border-radius: 15px;
+            border: 2px solid white;
+        }
+        .admin-zone span { color: #fff; font-size: 15px; font-weight: bold; }
+        .admin-btn {
+            padding: 6px 15px;
+            font-size: 15px;
+            border: 2px solid var(--border-dark);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-excel { background-color: var(--kitsch-yellow); }
+        .btn-clear { background-color: #ff6b6b; color: white; }
+
+        @keyframes notebook-enter {
+            0% { transform: scale(0.9) rotate(-1deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        @keyframes bounce {
+            0% { transform: translateY(5px); }
+            100% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook-container">
+        <div class="progress-ribbon">
+            <span>2026 놀터 출석부</span>
+            <div class="progress-dots">
+                <div class="dot active" id="dot1"></div>
+                <div class="dot" id="dot2"></div>
+                <div class="dot" id="dot3"></div>
+                <div class="dot" id="dot4"></div>
+            </div>
+        </div>
+
+        <div class="step-viewport">
+            <!-- STEP 1: 대표자 이름 입력 -->
+            <div class="step-page active" id="step1">
+                <div class="welcome-hero">
+                    <div class="welcome-left">
+                        <div class="badge-10th">WELCOME !</div>
+                        <h1 class="kitsch-title">출석 체크를 시작할게!<br>너의 이름은 뭐야?</h1>
+                        <p class="kitsch-subtitle">출석부를 이끌고 갈 대표 친구의 이름을 적어줘 📝</p>
+                        <input type="text" id="leaderName" class="kitsch-input" placeholder="여기에 이름 입력하기..." autocomplete="off">
+                    </div>
+                    <div class="welcome-left welcome-right">
+                        <div class="doit-mascot-wrapper">
+                            <img src="해냈다 두잇.png" alt="두잇 캐릭터" class="doit-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: 연령 및 성별 카운터 -->
+            <div class="step-page" id="step2">
+                <div>
+                    <h1 class="kitsch-title">누구누구 같이 왔어?</h1>
+                    <p class="kitsch-subtitle">너 자신(본인)을 포함해서 같이 온 인원수를 전부 체크해줘! 👥</p>
+                </div>
+                <div class="status-sticker yellow">
+                    <span>총 인원</span>
+                    <strong id="totalCountDisplay">0</strong>
+                </div>
+                <div class="grid-wrapper" id="ageGrid"></div>
+            </div>
+
+            <!-- STEP 3: 지역별 인원 입력 -->
+            <div class="step-page" id="step3">
+                <div>
+                    <h1 class="kitsch-title">어느 지역구에서 왔어?</h1>
+                    <p class="kitsch-subtitle">일행들이 속한 지역구의 인원을 각각 체크해줘! 📍</p>
+                </div>
+                <div class="status-sticker blue">
+                    <span>남은 인원</span>
+                    <strong id="remainingCountDisplay">0</strong>
+                </div>
+                <div class="grid-wrapper" id="regionGrid"></div>
+            </div>
+
+            <!-- STEP 4: 완료 안내 페이지 영수증 확인 -->
+            <div class="step-page" id="step4">
+                <div class="receipt-container">
+                    <div class="receipt-paper">
+                        <h1 class="kitsch-title" style="font-size:36px; text-align:center; margin-bottom:20px;">체크인 영수증 🧾</h1>
+                        <div class="receipt-row"><span>대표자</span><em id="finalLeader">---</em></div>
+                        
+                        <div class="receipt-row" style="margin-bottom:2px; border:none;"><span>선택한 연령대 분포</span></div>
+                        <div class="receipt-sub-list" id="finalAgeDetails"></div>
+
+                        <div class="receipt-row" style="margin-bottom:2px; border:none;"><span>선택한 지역 분포</span></div>
+                        <div class="receipt-sub-list" id="finalRegionDetails"></div>
+
+                        <div class="receipt-row" style="border-top:3px solid #121212; padding-top:10px;"><span>총 멤버 수</span><em id="finalTotal">0 명</em></div>
+                    </div>
+                    <div style="flex:0.8; text-align: center;">
+                        <div class="doit-mascot-wrapper" style="margin: 0 auto;">
+                            <img src="해냈다 두잇.png" alt="두잇 캐릭터" class="doit-img">
+                        </div>
+                        <h2 style="font-size: 32px; margin-top:20px;">출석 준비 끝! 완벽해!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하단 네비게이션 버튼 -->
+        <div class="footer-action-bar">
+            <button class="nav-btn btn-back" id="prevBtn" onclick="moveStep(-1)" style="visibility: hidden;">
+                <i class="fa-solid fa-arrow-left"></i> 이전으로
+            </button>
+            <button class="nav-btn btn-next" id="nextBtn" onclick="moveStep(1)">
+                다음 단계로 <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 관리자 메뉴 구역 -->
+    <div class="admin-zone">
+        <span>⚙️ 놀터 관리자 메뉴 :</span>
+        <button class="admin-btn btn-excel" onclick="checkAdminPassword('download')">📊 한 달 데이터 엑셀(CSV) 다운로드</button>
+        <button class="admin-btn btn-clear" onclick="checkAdminPassword('clear')">⚠️ 전체 데이터 초기화</button>
+    </div>
+
+    <script>
+        // 🔑 요청하신 고유 비밀번호 세팅 완료
+        const ADMIN_PASSWORD = "0924";
+
+        let currentStep = 1;
+        let totalCheckedPeople = 0;
+        
+        const ageCategories = ["유아", "초등", "중등", "고등", "대학생", "학교밖", "성인"];
+        const regionCategories = ["덕양구", "일산동구", "일산서구", "기타"];
+
+        const attendanceData = {};
+        const regionData = {};
+
+        ageCategories.forEach(cat => attendanceData[cat] = { male: 0, female: 0 });
+        regionCategories.forEach(reg => regionData[reg] = 0);
+
+        // 스텝 2 나이 그리드 동적 드로잉
+        const ageGrid = document.getElementById('ageGrid');
+        ageCategories.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'kitsch-card';
+            card.innerHTML = `
+                <div class="card-title">${cat}</div>
+                <div class="counter-row">
+                    <span>남 👦🏻</span>
+                    <div class="counter-controls">
+                        <div class="counter-btn minus" onclick="updateAgeCount('${cat}', 'male', -1)">-</div>
+                        <div class="count-val" id="${cat}-male-val">0</div>
+                        <div class="counter-btn plus" onclick="updateAgeCount('${cat}', 'male', 1)">+</div>
+                    </div>
+                </div>
+                <div class="counter-row">
+                    <span>여 👧🏻</span>
+                    <div class="counter-controls">
+                        <div class="counter-btn minus" onclick="updateAgeCount('${cat}', 'female', -1)">-</div>
+                        <div class="count-val" id="${cat}-female-val">0</div>
+                        <div class="counter-btn plus" onclick="updateAgeCount('${cat}', 'female', 1)">+</div>
+                    </div>
+                </div>
+            `;
+            ageGrid.appendChild(card);
+        });
+
+        // 스텝 3 지역 그리드 동적 드로잉
+        const regionGrid = document.getElementById('regionGrid');
+        regionCategories.forEach(reg => {
+            const card = document.createElement('div');
+            card.className = 'kitsch-card';
+            card.innerHTML = `
+                <div class="card-title" style="font-size:30px; margin-bottom:10px;">${reg}</div>
+                <div class="counter-row" style="padding:12px;">
+                    <span>인원수 📍</span>
+                    <div class="counter-controls">
+                        <div class="counter-btn minus" onclick="updateRegionCount('${reg}', -1)">-</div>
+                        <div class="count-val" id="${reg}-val" style="font-size:26px; width:35px;">0</div>
+                        <div class="counter-btn plus" onclick="updateRegionCount('${reg}', 1)">+</div>
+                    </div>
+                </div>
+            `;
+            regionGrid.appendChild(card);
+        });
+
+        function updateAgeCount(category, gender, change) {
+            let current = attendanceData[category][gender];
+            let newValue = current + change;
+            if (newValue < 0) newValue = 0;
+            attendanceData[category][gender] = newValue;
+            document.getElementById(`${category}-${gender}-val`).textContent = newValue;
+            calculateAgeTotal();
+        }
+
+        function calculateAgeTotal() {
+            let total = 0;
+            ageCategories.forEach(cat => {
+                total += attendanceData[cat].male;
+                total += attendanceData[cat].female;
+            });
+            document.getElementById('totalCountDisplay').textContent = total;
+            totalCheckedPeople = total;
+            return total;
+        }
+
+        function updateRegionCount(region, change) {
+            let current = regionData[region];
+            let newValue = current + change;
+            if (newValue < 0) newValue = 0;
+            regionData[region] = newValue;
+            document.getElementById(`${region}-val`).textContent = newValue;
+            calculateRegionRemaining();
+        }
+
+        function calculateRegionRemaining() {
+            let currentRegionTotal = 0;
+            regionCategories.forEach(reg => currentRegionTotal += regionData[reg]);
+            let remaining = totalCheckedPeople - currentRegionTotal;
+            document.getElementById('remainingCountDisplay').textContent = remaining;
+            return remaining;
+        }
+
+        function moveStep(direction) {
+            if (direction === 1) {
+                if (currentStep === 1) {
+                    const name = document.getElementById('leaderName').value.trim();
+                    if (!name) { alert('대표자 이름을 꼭 입력해줘! 😊'); return; }
+                }
+                if (currentStep === 2) {
+                    if (calculateAgeTotal() === 0) { alert('같이 온 인원을 1명 이상 입력해줘! 👥'); return; }
+                    calculateRegionRemaining();
+                }
+                if (currentStep === 3) {
+                    let currentRegionTotal = 0;
+                    regionCategories.forEach(reg => currentRegionTotal += regionData[reg]);
+                    if (currentRegionTotal !== totalCheckedPeople) {
+                        alert(`인원수가 맞지 않아! 🤨\n\n총 인원은 [ ${totalCheckedPeople}명 ] 인데,\n지금 지역별 인원은 [ ${currentRegionTotal}명 ] 이야. 딱 맞춰줘!`);
+                        return;
+                    }
+                }
+            }
+
+            currentStep += direction;
+            document.querySelectorAll('.step-page').forEach(page => page.classList.remove('active'));
+            document.getElementById(`step${currentStep}`).classList.add('active');
+
+            document.querySelectorAll('.dot').forEach((dot, idx) => {
+                dot.classList.remove('active', 'completed');
+                if (idx + 1 === currentStep) dot.classList.add('active');
+                else if (idx + 1 < currentStep) dot.classList.add('completed');
+            });
+
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (currentStep === 1) prevBtn.style.visibility = 'hidden';
+            else prevBtn.style.visibility = 'visible';
+
+            if (currentStep === 4) {
+                document.getElementById('finalLeader').textContent = document.getElementById('leaderName').value;
+                document.getElementById('finalTotal').textContent = totalCheckedPeople + " 명";
+
+                let ageHtml = "";
+                ageCategories.forEach(cat => {
+                    let m = attendanceData[cat].male;
+                    let f = attendanceData[cat].female;
+                    if(m > 0 || f > 0) ageHtml += `• ${cat}: ${m>0?`남 ${m}명 `:''}${f>0?`여 ${f}명`:''}<br>`;
+                });
+                document.getElementById('finalAgeDetails').innerHTML = ageHtml;
+
+                let regHtml = "";
+                regionCategories.forEach(reg => {
+                    if(regionData[reg] > 0) regHtml += `• ${reg}: ${regionData[reg]}명<br>`;
+                });
+                document.getElementById('finalRegionDetails').innerHTML = regHtml;
+
+                nextBtn.className = "nav-btn btn-submit";
+                nextBtn.innerHTML = `최종 제출하기 <i class="fa-solid fa-paper-plane"></i>`;
+                nextBtn.onclick = saveAndReset;
+            } else {
+                nextBtn.className = "nav-btn btn-next";
+                nextBtn.innerHTML = `다음 단계로 <i class="fa-solid fa-arrow-right"></i>`;
+                nextBtn.onclick = function() { moveStep(1); };
+            }
+        }
+
+        // 💾 로컬 내장 공간 타임스탬프와 함께 레코드 추가 로직
+        function saveAndReset() {
+            const now = new Date();
+            // 응답 날짜 타임스탬프 규격 텍스트화
+            const timestamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            
+            const newRecord = {
+                date: timestamp, // 이 값이 엑셀 첫 열에 찍힙니다
+                leader: document.getElementById('leaderName').value.trim(),
+                total: totalCheckedPeople,
+                baby_m: attendanceData["유아"].male, baby_f: attendanceData["유아"].female,
+                elem_m: attendanceData["초등"].male, elem_f: attendanceData["초등"].female,
+                mid_m: attendanceData["중등"].male, mid_f: attendanceData["중등"].female,
+                high_m: attendanceData["고등"].male, high_f: attendanceData["고등"].female,
+                univ_m: attendanceData["대학생"].male, univ_f: attendanceData["대학생"].female,
+                out_m: attendanceData["학교밖"].male, out_f: attendanceData["학교밖"].female,
+                adult_m: attendanceData["성인"].male, adult_f: attendanceData["성인"].female,
+                deogyang: regionData["덕양구"],
+                ilsandong: regionData["일산동구"],
+                ilsanseo: regionData["일산서구"],
+                etc_region: regionData["기타"]
+            };
+
+            let localHistory = JSON.parse(localStorage.getItem('nolter_attendance')) || [];
+            localHistory.push(newRecord);
+            localStorage.setItem('nolter_attendance', JSON.stringify(localHistory));
+
+            alert("🎉 놀터 출석 등록 완료되었습니다! 즐거운 시간 보내자고!");
+            location.reload();
+        }
+
+        // 🔐 비밀번호 검증 함수
+        function checkAdminPassword(actionType) {
+            const userInput = prompt("🔒 관리자 비밀번호를 입력해주세요:");
+            
+            if (userInput === null) return; 
+            
+            if (userInput === ADMIN_PASSWORD) {
+                if (actionType === 'download') {
+                    downloadExcel();
+                } else if (actionType === 'clear') {
+                    clearAdminData();
+                }
+            } else {
+                alert("❌ 비밀번호가 틀렸습니다! 접근할 수 없습니다.");
+            }
+        }
+
+        // 📊 응답날짜가 첫 기둥으로 찍혀 나오는 엑셀(CSV) 추출 엔진
+        function downloadExcel() {
+            const data = JSON.parse(localStorage.getItem('nolter_attendance')) || [];
+            if(data.length === 0) {
+                alert("아직 누적된 출석 데이터가 없어!");
+                return;
+            }
+
+            let csvContent = "\uFEFF"; // 한글 깨짐 방지 BOM 주입
+            // 헤더 정의부 첫 줄에 '등록일시(응답날짜)' 가 기록됩니다.
+            csvContent += "등록일시,대표자,총원,유아(남),유아(여),초등(남),초등(여),중등(남),중등(여),고등(남),고등(여),대학생(남),대학생(여),학교밖(남),학교밖(여),성인(남),성인(여),덕양구,일산동구,일산서구,기타지역\n";
+
+            data.forEach(r => {
+                let row = `"${r.date}","${r.leader}",${r.total},${r.baby_m},${r.baby_f},${r.elem_m},${r.elem_f},${r.mid_m},${r.mid_f},${r.high_m},${r.high_f},${r.univ_m},${r.univ_f},${r.out_m},${r.out_f},${r.adult_m},${r.adult_f},${r.deogyang},${r.ilsandong},${r.ilsanseo},${r.etc_region}\n`;
+                csvContent += row;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "놀터_출석부_누적데이터.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearAdminData() {
+            if(confirm("정말로 누적된 데이터를 전부 지울 거야? 지워진 데이터는 복구할 수 없어!")) {
+                localStorage.removeItem('nolter_attendance');
+                alert("전체 데이터가 안전하게 초기화되었어!");
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
