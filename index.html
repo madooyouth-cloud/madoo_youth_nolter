@@ -2,9 +2,9 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026 놀터 출석부</title>
-    <!-- 키치 감성 한글/영문 폰트 불러오기 -->
+    <!-- 키치 감성 한글/영문 폰트 및 아이콘 불러오기 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
     <style>
         /* 글로벌 키치 스타일 정의 */
         :root {
-            --bg-color: #ffd2e0; /* 연분홍 */
-            --notebook-yellow: #fff3cb; /* 레트로 스프링노트 속지색 */
+            --bg-color: #ffd2e0; 
+            --notebook-yellow: #fff3cb; 
             --kitsch-pink: #ff5e97;
             --kitsch-blue: #3bc9db;
             --kitsch-yellow: #ffd43b;
@@ -39,25 +39,26 @@
             background-size: 40px 40px;
             background-position: 0 0, 20px 20px;
             margin: 0;
-            padding: 0;
-            height: 100vh;
+            padding: 10px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* 대형 스프링 노트 컨테이너 */
+        /* 대형 스프링 노트 컨테이너 (반응형 유연한 크기 제어) */
         .notebook-container {
-            width: 95%;
+            width: 100%;
             max-width: 1100px;
-            height: 80vh;
-            max-height: 720px;
+            height: 85vh;
+            min-height: 550px;
+            max-height: 750px;
             background-color: var(--notebook-yellow);
-            border: 6px solid var(--border-dark);
+            border: clamp(4px, 0.6vw, 6px) solid var(--border-dark);
             border-radius: 30px;
-            box-shadow: 15px 15px 0px var(--border-dark);
+            box-shadow: 10px 10px 0px var(--border-dark);
             position: relative;
             display: flex;
             flex-direction: column;
@@ -68,24 +69,24 @@
         /* 진척도 표시 바 */
         .progress-ribbon {
             background-color: var(--border-dark);
-            padding: 15px 30px;
+            padding: 12px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: white;
-            border-bottom: 6px solid var(--border-dark);
-            font-size: 24px;
+            border-bottom: clamp(4px, 0.6vw, 6px) solid var(--border-dark);
+            font-size: clamp(18px, 2vw, 24px);
         }
 
         .progress-dots {
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }
 
         .dot {
-            width: 20px;
-            height: 20px;
-            border: 3px solid white;
+            width: clamp(14px, 1.5vw, 20px);
+            height: clamp(14px, 1.5vw, 20px);
+            border: 2px solid white;
             border-radius: 50%;
             background-color: transparent;
             transition: all 0.3s ease;
@@ -93,7 +94,7 @@
 
         .dot.active {
             background-color: var(--kitsch-pink);
-            transform: scale(1.3);
+            transform: scale(1.2);
             border-color: var(--kitsch-pink);
         }
 
@@ -107,6 +108,7 @@
             flex-grow: 1;
             position: relative;
             width: 100%;
+            height: calc(100% - 130px);
         }
 
         .step-page {
@@ -115,7 +117,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 40px 50px;
+            padding: clamp(15px, 3vw, 40px) clamp(20px, 4vw, 50px);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -126,42 +128,43 @@
             display: flex;
         }
 
-        /* 키치 타이포그래피 */
+        /* 키치 타이포그래피 (화면폭에 연동되는 글자 크기) */
         .kitsch-title {
-            font-size: 46px;
+            font-size: clamp(26px, 4.2vw, 46px);
+            line-height: 1.2;
             color: var(--border-dark);
-            margin: 0 0 10px 0;
-            text-shadow: 3px 3px 0px white;
+            margin: 0 0 8px 0;
+            text-shadow: 2px 2px 0px white;
         }
 
         .kitsch-subtitle {
-            font-size: 22px;
+            font-size: clamp(15px, 2vw, 22px);
             color: #555;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
-        /* 스텝 1: 메인 인트로 */
+        /* 스텝 1: 메인 인트로 히어로 맵 */
         .welcome-hero {
             display: flex;
+            flex-direction: row;
             align-items: center;
             justify-content: space-between;
             height: 100%;
-            gap: 40px;
+            gap: 20px;
         }
 
-        .welcome-left { flex: 1.2; }
+        .welcome-left { flex: 1.2; width: 100%; }
         .welcome-right {
             flex: 0.8;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
         }
 
         .doit-mascot-wrapper {
             position: relative;
-            width: 320px;
-            height: 320px;
+            width: clamp(180px, 28vw, 320px);
+            height: clamp(180px, 28vw, 320px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -178,48 +181,49 @@
         .badge-10th {
             background-color: var(--kitsch-pink);
             color: white;
-            padding: 6px 16px;
-            font-size: 24px;
+            padding: 4px 12px;
+            font-size: clamp(16px, 1.8vw, 24px);
             border-radius: 40px;
             border: 3px solid var(--border-dark);
             display: inline-block;
             transform: rotate(-5deg);
-            margin-bottom: 15px;
-            box-shadow: 4px 4px 0 var(--border-dark);
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0 var(--border-dark);
         }
 
         .kitsch-input {
             width: 100%;
             max-width: 500px;
-            padding: 20px 25px;
-            font-size: 32px;
-            border: 5px solid var(--border-dark);
+            padding: clamp(12px, 2vw, 20px) clamp(15px, 2.5vw, 25px);
+            font-size: clamp(20px, 3vw, 32px);
+            border: 4px solid var(--border-dark);
             border-radius: 20px;
             background-color: white;
-            box-shadow: 6px 6px 0px var(--border-dark);
+            box-shadow: 5px 5px 0px var(--border-dark);
             outline: none;
         }
 
-        /* 스텝 2 & 스텝 3 공동 그리드 스타일 */
+        /* 가변 컴팩트 그리드 구조 (반응형 핵심 가로폭 매칭) */
         .grid-wrapper {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
             overflow-y: auto;
-            max-height: 360px;
-            padding: 10px;
+            flex-grow: 1;
+            padding: 5px;
+            margin-bottom: 10px;
         }
 
         .kitsch-card {
             background-color: white;
             border: 4px solid var(--border-dark);
             border-radius: 20px;
-            padding: 15px 12px;
-            box-shadow: 5px 5px 0px var(--border-dark);
+            padding: 12px 10px;
+            box-shadow: 4px 4px 0px var(--border-dark);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .kitsch-card:nth-child(1) { background-color: #fff4f2; }
@@ -231,10 +235,10 @@
         .kitsch-card:nth-child(7) { background-color: #fff0f6; }
 
         .card-title {
-            font-size: 24px;
+            font-size: clamp(20px, 2.2vw, 24px);
             font-weight: bold;
             border-bottom: 3px solid var(--border-dark);
-            padding-bottom: 3px;
+            padding-bottom: 2px;
             width: 100%;
             text-align: center;
         }
@@ -247,7 +251,7 @@
             background: white;
             border: 2px solid var(--border-dark);
             border-radius: 12px;
-            padding: 6px 10px;
+            padding: 4px 8px;
         }
 
         .counter-controls {
@@ -257,15 +261,15 @@
         }
 
         .counter-btn {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 8px;
             border: 2px solid var(--border-dark);
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
         }
 
@@ -273,70 +277,82 @@
         .counter-btn.plus { background-color: #8ce99a; }
 
         .count-val {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            width: 25px;
+            width: 20px;
             text-align: center;
             font-family: 'Fredoka', sans-serif;
         }
 
-        /* 실시간 상태 우측 상단 스티커 */
+        /* 상태 트래킹 플로팅 배지 */
         .status-sticker {
             position: absolute;
-            right: 40px;
-            top: 25px;
+            right: 3%;
+            top: 20px;
             border: 4px solid var(--border-dark);
             border-radius: 50%;
-            width: 110px;
-            height: 110px;
+            width: clamp(80px, 11vw, 110px);
+            height: clamp(80px, 11vw, 110px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 5px 5px 0 var(--border-dark);
+            box-shadow: 4px 4px 0 var(--border-dark);
             z-index: 10;
         }
         .status-sticker.yellow { background-color: var(--kitsch-yellow); transform: rotate(-10deg); }
-        .status-sticker.blue { background-color: var(--kitsch-blue); transform: rotate(8deg); right: 50px; }
+        .status-sticker.blue { background-color: var(--kitsch-blue); transform: rotate(8deg); }
 
-        .status-sticker span { font-size: 13px; color: #333; font-weight: bold; }
-        .status-sticker strong { font-size: 30px; font-family: 'Fredoka'; }
+        .status-sticker span { font-size: clamp(10px, 1.2vw, 13px); color: #333; font-weight: bold; }
+        .status-sticker strong { font-size: clamp(22px, 3vw, 30px); font-family: 'Fredoka'; }
 
-        /* 스텝 4: 영수증 화면 */
+        /* 스텝 4: 영수증 모바일/태블릿 가변형 배치 */
         .receipt-container {
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
             align-items: center;
             height: 100%;
-            gap: 40px;
+            gap: clamp(15px, 3vw, 40px);
+            overflow-y: auto;
         }
 
         .receipt-paper {
             background: white;
             border: 4px solid var(--border-dark);
-            box-shadow: 8px 8px 0 var(--border-dark);
+            box-shadow: 6px 6px 0 var(--border-dark);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             flex: 1.2;
-            max-height: 380px;
+            width: 100%;
+            max-height: 100%;
             overflow-y: auto;
         }
 
         .receipt-row {
             display: flex;
             justify-content: space-between;
-            font-size: 24px;
-            margin-bottom: 12px;
+            font-size: clamp(18px, 2.4vw, 24px);
+            margin-bottom: 10px;
             border-bottom: 2px dashed #ccc;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .receipt-row em { color: var(--kitsch-pink); font-style: normal; font-weight: bold; }
-        .receipt-sub-list { font-size: 18px; color: #555; padding-left: 15px; margin-bottom: 10px; }
+        .receipt-sub-list { font-size: clamp(14px, 1.8vw, 18px); color: #555; padding-left: 10px; margin-bottom: 8px; line-height: 1.4; }
 
-        /* 하단 컨트롤 바 */
+        .receipt-summary-right {
+            flex: 0.8; 
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 하단 조작 컨트롤러 바 */
         .footer-action-bar {
-            padding: 20px 50px;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -345,52 +361,102 @@
         }
 
         .nav-btn {
-            padding: 12px 30px;
-            font-size: 22px;
+            padding: clamp(10px, 1.5vw, 14px) clamp(20px, 3vw, 35px);
+            font-size: clamp(18px, 2.2vw, 24px);
             border: 4px solid var(--border-dark);
             border-radius: 50px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 5px 5px 0 var(--border-dark);
+            gap: 10px;
+            box-shadow: 4px 4px 0 var(--border-dark);
         }
 
-        .nav-btn:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--border-dark); }
+        .nav-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--border-dark); }
         .btn-back { background-color: #e0e0e0; }
         .btn-next { background-color: var(--kitsch-orange); color: white; }
         .btn-submit { background-color: var(--kitsch-green); color: white; }
 
-        /* 하단 관리자 기능 구역 */
+        /* 하단 완전 밀착형 관리자 도크 시스템 */
         .admin-zone {
-            margin-top: 25px;
+            width: 95%;
+            max-width: 1100px;
+            margin-top: 15px;
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
             align-items: center;
-            background: rgba(0,0,0,0.7);
-            padding: 10px 25px;
+            justify-content: center;
+            background: rgba(0,0,0,0.85);
+            padding: 10px 15px;
             border-radius: 15px;
             border: 2px solid white;
+            z-index: 20;
         }
-        .admin-zone span { color: #fff; font-size: 15px; font-weight: bold; }
+        .admin-zone span { color: #fff; font-size: 13px; font-weight: bold; }
         .admin-btn {
-            padding: 6px 15px;
-            font-size: 15px;
+            padding: 6px 12px;
+            font-size: 13px;
             border: 2px solid var(--border-dark);
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
         }
         .btn-excel { background-color: var(--kitsch-yellow); }
+        .btn-copy-mode { background-color: var(--kitsch-blue); color: white; }
         .btn-clear { background-color: #ff6b6b; color: white; }
 
+        /* 대화상자 복사본 모달 레이아웃 */
+        .kitsch-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 550px;
+            background-color: white;
+            border: 5px solid var(--border-dark);
+            border-radius: 20px;
+            box-shadow: 0px 0px 30px rgba(0,0,0,0.3);
+            padding: 20px;
+            z-index: 100;
+        }
+        .kitsch-modal h3 { font-size: 22px; margin-top: 0; }
+        .kitsch-textarea {
+            width: 100%;
+            height: 180px;
+            border: 3px solid var(--border-dark);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 13px;
+            resize: none;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        .modal-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+
+        /* 스마트폰 가로/세로 전용 극단적 예외처리 미디어 쿼리 정의 */
+        @media (max-width: 680px) {
+            body { padding: 5px; }
+            .notebook-container { height: 92vh; border-radius: 20px; }
+            .welcome-hero { flex-direction: column-reverse; justify-content: center; gap: 10px; }
+            .welcome-right { margin-bottom: 10px; }
+            .grid-wrapper { grid-template-columns: repeat(2, 1fr); max-height: 290px; }
+            .status-sticker { top: 5px; right: 5px; }
+            .receipt-container { flex-direction: column; }
+            .receipt-summary-right { display: none; } /* 스마트폰에선 완료마스코트 숨기고 영수증 몰입 */
+            .admin-zone { font-size: 11px; padding: 6px; }
+            .admin-btn { padding: 4px 8px; font-size: 11px; }
+        }
+
         @keyframes notebook-enter {
-            0% { transform: scale(0.9) rotate(-1deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
         @keyframes bounce {
             0% { transform: translateY(5px); }
-            100% { transform: translateY(-15px); }
+            100% { transform: translateY(-10px); }
         }
     </style>
 </head>
@@ -408,7 +474,7 @@
         </div>
 
         <div class="step-viewport">
-            <!-- STEP 1: 대표자 이름 입력 -->
+            <!-- STEP 1 -->
             <div class="step-page active" id="step1">
                 <div class="welcome-hero">
                     <div class="welcome-left">
@@ -417,7 +483,7 @@
                         <p class="kitsch-subtitle">출석부를 이끌고 갈 대표 친구의 이름을 적어줘 📝</p>
                         <input type="text" id="leaderName" class="kitsch-input" placeholder="여기에 이름 입력하기..." autocomplete="off">
                     </div>
-                    <div class="welcome-left welcome-right">
+                    <div class="welcome-right">
                         <div class="doit-mascot-wrapper">
                             <img src="해냈다 두잇.png" alt="두잇 캐릭터" class="doit-img">
                         </div>
@@ -425,11 +491,11 @@
                 </div>
             </div>
 
-            <!-- STEP 2: 연령 및 성별 카운터 -->
+            <!-- STEP 2 -->
             <div class="step-page" id="step2">
                 <div>
                     <h1 class="kitsch-title">누구누구 같이 왔어?</h1>
-                    <p class="kitsch-subtitle">너 자신(본인)을 포함해서 같이 온 인원수를 전부 체크해줘! 👥</p>
+                    <p class="kitsch-subtitle">너 자신을 포함해서 같이 온 인원수를 체크해줘! 👥</p>
                 </div>
                 <div class="status-sticker yellow">
                     <span>총 인원</span>
@@ -438,7 +504,7 @@
                 <div class="grid-wrapper" id="ageGrid"></div>
             </div>
 
-            <!-- STEP 3: 지역별 인원 입력 -->
+            <!-- STEP 3 -->
             <div class="step-page" id="step3">
                 <div>
                     <h1 class="kitsch-title">어느 지역구에서 왔어?</h1>
@@ -451,11 +517,11 @@
                 <div class="grid-wrapper" id="regionGrid"></div>
             </div>
 
-            <!-- STEP 4: 완료 안내 페이지 영수증 확인 -->
+            <!-- STEP 4 -->
             <div class="step-page" id="step4">
                 <div class="receipt-container">
                     <div class="receipt-paper">
-                        <h1 class="kitsch-title" style="font-size:36px; text-align:center; margin-bottom:20px;">체크인 영수증 🧾</h1>
+                        <h1 class="kitsch-title" style="font-size: clamp(24px, 3vw, 36px); text-align:center; margin-bottom:15px;">체크인 영수증 🧾</h1>
                         <div class="receipt-row"><span>대표자</span><em id="finalLeader">---</em></div>
                         
                         <div class="receipt-row" style="margin-bottom:2px; border:none;"><span>선택한 연령대 분포</span></div>
@@ -466,17 +532,16 @@
 
                         <div class="receipt-row" style="border-top:3px solid #121212; padding-top:10px;"><span>총 멤버 수</span><em id="finalTotal">0 명</em></div>
                     </div>
-                    <div style="flex:0.8; text-align: center;">
-                        <div class="doit-mascot-wrapper" style="margin: 0 auto;">
+                    <div class="receipt-summary-right">
+                        <div class="doit-mascot-wrapper">
                             <img src="해냈다 두잇.png" alt="두잇 캐릭터" class="doit-img">
                         </div>
-                        <h2 style="font-size: 32px; margin-top:20px;">출석 준비 끝! 완벽해!</h2>
+                        <h2 style="font-size: clamp(20px, 2.5vw, 32px); margin-top:15px;">출석 준비 끝! 완벽해!</h2>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 하단 네비게이션 버튼 -->
         <div class="footer-action-bar">
             <button class="nav-btn btn-back" id="prevBtn" onclick="moveStep(-1)" style="visibility: hidden;">
                 <i class="fa-solid fa-arrow-left"></i> 이전으로
@@ -487,15 +552,24 @@
         </div>
     </div>
 
-    <!-- 관리자 메뉴 구역 -->
     <div class="admin-zone">
         <span>⚙️ 놀터 관리자 메뉴 :</span>
-        <button class="admin-btn btn-excel" onclick="checkAdminPassword('download')">📊 한 달 데이터 엑셀(CSV) 다운로드</button>
+        <button class="admin-btn btn-copy-mode" onclick="checkAdminPassword('copy')">📋 전체 데이터 텍스트 복사</button>
+        <button class="admin-btn btn-excel" onclick="checkAdminPassword('download')">📊 일반 파일 다운로드</button>
         <button class="admin-btn btn-clear" onclick="checkAdminPassword('clear')">⚠️ 전체 데이터 초기화</button>
     </div>
 
+    <div class="kitsch-modal" id="textDataModal">
+        <h3>📋 누적 데이터 복사하기</h3>
+        <p>아래 상자 안의 텍스트를 복사해 카톡이나 컴퓨터 메모장에 붙여넣으세요!</p>
+        <textarea class="kitsch-textarea" id="modalTextarea" readonly></textarea>
+        <div class="modal-btns">
+            <button class="admin-btn btn-copy-mode" onclick="copyModalText()">텍스트 전체 복사하기</button>
+            <button class="admin-btn btn-back" onclick="closeModal()">닫기</button>
+        </div>
+    </div>
+
     <script>
-        // 🔑 요청하신 고유 비밀번호 세팅 완료
         const ADMIN_PASSWORD = "0924";
 
         let currentStep = 1;
@@ -510,7 +584,6 @@
         ageCategories.forEach(cat => attendanceData[cat] = { male: 0, female: 0 });
         regionCategories.forEach(reg => regionData[reg] = 0);
 
-        // 스텝 2 나이 그리드 동적 드로잉
         const ageGrid = document.getElementById('ageGrid');
         ageCategories.forEach(cat => {
             const card = document.createElement('div');
@@ -537,18 +610,17 @@
             ageGrid.appendChild(card);
         });
 
-        // 스텝 3 지역 그리드 동적 드로잉
         const regionGrid = document.getElementById('regionGrid');
         regionCategories.forEach(reg => {
             const card = document.createElement('div');
             card.className = 'kitsch-card';
             card.innerHTML = `
-                <div class="card-title" style="font-size:30px; margin-bottom:10px;">${reg}</div>
-                <div class="counter-row" style="padding:12px;">
+                <div class="card-title" style="font-size:clamp(22px, 2.5vw, 30px);">${reg}</div>
+                <div class="counter-row" style="padding:8px;">
                     <span>인원수 📍</span>
                     <div class="counter-controls">
                         <div class="counter-btn minus" onclick="updateRegionCount('${reg}', -1)">-</div>
-                        <div class="count-val" id="${reg}-val" style="font-size:26px; width:35px;">0</div>
+                        <div class="count-val" id="${reg}-val" style="font-size:22px; width:30px;">0</div>
                         <div class="counter-btn plus" onclick="updateRegionCount('${reg}', 1)">+</div>
                     </div>
                 </div>
@@ -657,14 +729,12 @@
             }
         }
 
-        // 💾 로컬 내장 공간 타임스탬프와 함께 레코드 추가 로직
         function saveAndReset() {
             const now = new Date();
-            // 응답 날짜 타임스탬프 규격 텍스트화
             const timestamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
             
             const newRecord = {
-                date: timestamp, // 이 값이 엑셀 첫 열에 찍힙니다
+                date: timestamp,
                 leader: document.getElementById('leaderName').value.trim(),
                 total: totalCheckedPeople,
                 baby_m: attendanceData["유아"].male, baby_f: attendanceData["유아"].female,
@@ -688,10 +758,8 @@
             location.reload();
         }
 
-        // 🔐 비밀번호 검증 함수
         function checkAdminPassword(actionType) {
             const userInput = prompt("🔒 관리자 비밀번호를 입력해주세요:");
-            
             if (userInput === null) return; 
             
             if (userInput === ADMIN_PASSWORD) {
@@ -699,28 +767,57 @@
                     downloadExcel();
                 } else if (actionType === 'clear') {
                     clearAdminData();
+                } else if (actionType === 'copy') {
+                    openTextModal();
                 }
             } else {
                 alert("❌ 비밀번호가 틀렸습니다! 접근할 수 없습니다.");
             }
         }
 
-        // 📊 응답날짜가 첫 기둥으로 찍혀 나오는 엑셀(CSV) 추출 엔진
-        function downloadExcel() {
+        function buildCsvString() {
             const data = JSON.parse(localStorage.getItem('nolter_attendance')) || [];
-            if(data.length === 0) {
+            if(data.length === 0) return "";
+
+            let csv = "등록일시,대표자,총원,유아(남),유아(여),초등(남),초등(여),중등(남),중등(여),고등(남),고등(여),대학생(남),대학생(여),학교밖(남),학교밖(여),성인(남),성인(여),덕양구,일산동구,일산서구,기타지역\n";
+            data.forEach(r => {
+                csv += `"${r.date} ","${r.leader}",${r.total},${r.baby_m},${r.baby_f},${r.elem_m},${r.elem_f},${r.mid_m},${r.mid_f},${r.high_m},${r.high_f},${r.univ_m},${r.univ_f},${r.out_m},${r.out_f},${r.adult_m},${r.adult_f},${r.deogyang},${r.ilsandong},${r.ilsanseo},${r.etc_region}\n`;
+            });
+            return csv;
+        }
+
+        function openTextModal() {
+            const csvText = buildCsvString();
+            if(!csvText) {
                 alert("아직 누적된 출석 데이터가 없어!");
                 return;
             }
+            document.getElementById('modalTextarea').value = csvText;
+            document.getElementById('textDataModal').style.display = 'block';
+        }
 
-            let csvContent = "\uFEFF"; // 한글 깨짐 방지 BOM 주입
-            // 헤더 정의부 첫 줄에 '등록일시(응답날짜)' 가 기록됩니다.
-            csvContent += "등록일시,대표자,총원,유아(남),유아(여),초등(남),초등(여),중등(남),중등(여),고등(남),고등(여),대학생(남),대학생(여),학교밖(남),학교밖(여),성인(남),성인(여),덕양구,일산동구,일산서구,기타지역\n";
+        function closeModal() {
+            document.getElementById('textDataModal').style.display = 'none';
+        }
 
-            data.forEach(r => {
-                let row = `"${r.date}","${r.leader}",${r.total},${r.baby_m},${r.baby_f},${r.elem_m},${r.elem_f},${r.mid_m},${r.mid_f},${r.high_m},${r.high_f},${r.univ_m},${r.univ_f},${r.out_m},${r.out_f},${r.adult_m},${r.adult_f},${r.deogyang},${r.ilsandong},${r.ilsanseo},${r.etc_region}\n`;
-                csvContent += row;
-            });
+        function copyModalText() {
+            const textarea = document.getElementById('modalTextarea');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                alert("📋 데이터 복사 완료! 이제 카톡이나 컴퓨터 메모장에 바로 붙여넣기 하시면 됩니다.");
+            } catch (err) {
+                alert("자동 복사에 실패했습니다. 상자 안의 글씨를 길게 눌러 전체 선택 후 직접 복사해주세요!");
+            }
+        }
+
+        function downloadExcel() {
+            const csvContent = "\uFEFF" + buildCsvString();
+            if(buildCsvString() === "") {
+                alert("아직 누적된 출석 데이터가 없어!");
+                return;
+            }
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
