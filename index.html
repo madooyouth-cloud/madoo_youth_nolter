@@ -95,7 +95,6 @@
             background-color: white; box-shadow: 5px 5px 0px var(--border-dark); outline: none;
         }
 
-        /* 스크롤 그리드 레이아웃 */
         .grid-wrapper {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 12px; overflow-y: auto; flex-grow: 1; padding: 5px; margin-bottom: 5px;
@@ -129,7 +128,6 @@
         .counter-btn.plus { background-color: #8ce99a; }
         .count-val { font-size: 16px; font-weight: bold; width: 18px; text-align: center; font-family: 'Fredoka'; }
 
-        /* 신규 추가: 카드 하단 지역 분배 선택기 구역 */
         .card-region-selector-zone {
             width: 100%; display: flex; flex-direction: column; gap: 4px; margin-top: 4px; border-top: 1px dashed #ccc; padding-top: 6px;
         }
@@ -138,6 +136,10 @@
         }
         .region-select-row select {
             font-size: 13px; font-family: 'Jua'; padding: 2px 4px; border: 2px solid var(--border-dark); border-radius: 6px; outline: none; background: white;
+        }
+        /* 경고 강조용 스타일 빨간 테두리 */
+        .region-select-row select.need-select {
+            border-color: #ff6b6b; background-color: #fff5f5; color: #ff6b6b;
         }
 
         .status-sticker {
@@ -203,7 +205,6 @@
         </div>
 
         <div class="step-viewport">
-            <!-- STEP 1: 대표자 이름 입력 -->
             <div class="step-page active" id="step1">
                 <div class="welcome-hero">
                     <div class="welcome-left">
@@ -220,11 +221,10 @@
                 </div>
             </div>
 
-            <!-- STEP 2: 인원수 입력 및 하단 자동 연동 지역 선택 (완벽 퓨전 매칭 방식) -->
             <div class="step-page" id="step2">
                 <div>
                     <h1 class="kitsch-title">누구누구 같이 왔어?</h1>
-                    <p class="kitsch-subtitle">같이 온 인원수를 올리면, 그 아래에 지역구를 고르는 칸이 나타나! 👥</p>
+                    <p class="kitsch-subtitle">같이 온 인원수를 올리고, 그 아래에서 각각의 지역구를 꼭 선택해줘! 👥</p>
                 </div>
                 <div class="status-sticker yellow">
                     <span>총 인원</span>
@@ -233,7 +233,6 @@
                 <div class="grid-wrapper" id="ageGrid"></div>
             </div>
 
-            <!-- STEP 3: 정밀 체크인 영수증 확인창 -->
             <div class="step-page" id="step3">
                 <div class="receipt-container">
                     <div class="receipt-paper">
@@ -265,7 +264,6 @@
         </div>
     </div>
 
-    <!-- 관리자 독바 -->
     <div class="admin-zone">
         <span>⚙️ 놀터 관리자 메뉴 :</span>
         <button class="admin-btn btn-copy-mode" onclick="checkAdminPassword('copy')">📋 전체 데이터 텍스트 복사</button>
@@ -273,7 +271,6 @@
         <button class="admin-btn btn-clear" onclick="checkAdminPassword('clear')">⚠️ 전체 데이터 초기화</button>
     </div>
 
-    <!-- 복사용 모달 -->
     <div class="admin-textarea-modal" id="textDataModal">
         <h3>📋 누적 데이터 복사하기</h3>
         <p>아래 상자 안의 텍스트를 복사해 카톡이나 컴퓨터 메모장에 붙여넣으세요!</p>
@@ -296,12 +293,12 @@
         const attendanceData = {};
         ageCategories.forEach(cat => {
             attendanceData[cat] = {
-                male: [], // 각 인원 객체 배열 저장: { region: "일산동구" }
+                male: [], 
                 female: []
             };
         });
 
-        // 스텝 2 나이 카드 및 내부 동적 스위치 렌더링
+        // 나이 카드 바인딩
         const ageGrid = document.getElementById('ageGrid');
         ageCategories.forEach(cat => {
             const card = document.createElement('div');
@@ -325,7 +322,6 @@
                         <div class="counter-btn plus" onclick="changePersonCount('${cat}', 'female', 1)">+</div>
                     </div>
                 </div>
-                <!-- 하단에 각 한 명씩 지역구를 분배 매칭할 수 있는 컨테이너 스페이스 연동 -->
                 <div class="card-region-selector-zone" id="${cat}-selectors-zone"></div>
             `;
             ageGrid.appendChild(card);
@@ -334,7 +330,7 @@
         function changePersonCount(category, gender, change) {
             let list = attendanceData[category][gender];
             if (change === 1) {
-                list.push({ region: "일산동구" }); // 기본값 일산동구 배정
+                list.push({ region: "" }); // 🔑 초깃값을 빈칸("")으로 변경하여 강제 유도하도록 배치
             } else if (change === -1) {
                 if (list.length > 0) list.pop();
             }
@@ -344,18 +340,15 @@
             calculateTotals();
         }
 
-        // 인원수가 변경될 때 하단에 지역 선택 드롭다운 박스를 동적으로 매칭 생성하는 함수
         function rebuildRegionSelectors(category) {
             const zone = document.getElementById(`${category}-selectors-zone`);
-            zone.innerHTML = ""; // 초기화
+            zone.innerHTML = ""; 
 
-            // 남자 인원 구별 지정기 추가
             attendanceData[category].male.forEach((person, idx) => {
                 const row = createSelectRow(category, 'male', idx, person.region);
                 zone.appendChild(row);
             });
 
-            // 여자 인원 구별 지정기 추가
             attendanceData[category].female.forEach((person, idx) => {
                 const row = createSelectRow(category, 'female', idx, person.region);
                 zone.appendChild(row);
@@ -367,9 +360,21 @@
             row.className = 'region-select-row';
             
             const genderTag = gender === 'male' ? '남 👦🏻' : '여 👧🏻';
-            row.innerHTML = `<span>${genderTag}${idx + 1}의 지역:</span>`;
+            row.innerHTML = `<span>${genderTag}${idx + 1}번의 지역:</span>`;
             
             const select = document.createElement('select');
+            
+            // 🔑 첫 번째 줄에 빈 공간 선택 옵션 박스 추가 제공
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = "";
+            defaultOpt.textContent = "─ 선택해줘! 📍 ─";
+            defaultOpt.disabled = true;
+            if (currentRegion === "") {
+                defaultOpt.selected = true;
+                select.classList.add('need-select'); // 미선택 상태일 때 테두리 붉게 활성화
+            }
+            select.appendChild(defaultOpt);
+
             regionOptions.forEach(opt => {
                 const option = document.createElement('option');
                 option.value = opt;
@@ -380,6 +385,7 @@
 
             select.onchange = function() {
                 attendanceData[category][gender][idx].region = select.value;
+                select.classList.remove('need-select'); // 선택 완료 시 경고 테두리 해제
             };
             
             row.appendChild(select);
@@ -397,6 +403,42 @@
             return total;
         }
 
+        // 🔒 다음 단계 검증 필터 시스템 (미선택 인원 전체 트래킹)
+        function checkAllRegionsSelected() {
+            let allValid = true;
+            let errorMsg = "";
+
+            for (let i = 0; i < ageCategories.length; i++) {
+                let cat = ageCategories[i];
+                
+                // 남학생 검사
+                for (let m = 0; m < attendanceData[cat].male.length; m++) {
+                    if (attendanceData[cat].male[m].region === "") {
+                        errorMsg = `[ ${cat} 부문 ] 남학생 ${m+1}번 친구의 지역구를 아직 선택하지 않았어! 📍`;
+                        allValid = false;
+                        break;
+                    }
+                }
+                if (!allValid) break;
+
+                // 여학생 검사
+                for (let f = 0; f < attendanceData[cat].female.length; f++) {
+                    if (attendanceData[cat].female[f].region === "") {
+                        errorMsg = `[ ${cat} 부문 ] 여학생 ${f+1}번 친구의 지역구를 아직 선택하지 않았어! 📍`;
+                        allValid = false;
+                        break;
+                    }
+                }
+                if (!allValid) break;
+            }
+
+            if (!allValid) {
+                alert(errorMsg);
+                return false;
+            }
+            return true;
+        }
+
         function moveStep(direction) {
             if (direction === 1) {
                 if (currentStep === 1) {
@@ -405,6 +447,8 @@
                 }
                 if (currentStep === 2) {
                     if (calculateTotals() === 0) { alert('같이 온 인원을 최소 1명 이상 입력해줘야 해! 👥'); return; }
+                    // 🔑 통과 필터 작동 호출
+                    if (!checkAllRegionsSelected()) return;
                 }
             }
 
@@ -428,7 +472,6 @@
                 document.getElementById('finalLeader').textContent = document.getElementById('leaderName').value;
                 document.getElementById('finalTotal').textContent = totalCheckedPeople + " 명";
 
-                // 영수증에 완벽 1:1 매칭 현황을 요약 텍스트로 드로잉
                 let summaryHtml = "";
                 ageCategories.forEach(cat => {
                     let localLines = "";
@@ -462,14 +505,14 @@
                 date: timestamp,
                 leader: document.getElementById('leaderName').value.trim(),
                 total: totalCheckedPeople,
-                raw_payload: JSON.stringify(attendanceData) // 모든 데이터 1:1 구조 압축 저장
+                raw_payload: JSON.stringify(attendanceData) 
             };
 
-            let localHistory = JSON.parse(localStorage.getItem('nolter_perfect_v2')) || [];
+            let localHistory = JSON.parse(localStorage.getItem('nolter_perfect_v3')) || [];
             localHistory.push(record);
-            localStorage.setItem('nolter_perfect_v2', JSON.stringify(localHistory));
+            localStorage.setItem('nolter_perfect_v3', JSON.stringify(localHistory));
 
-            alert("🎉 완벽 정밀 매칭 출석 등록 완료! 대시보드에 기록 완료!");
+            alert("🎉 완벽 매칭 출석부가 안전하게 저장되었습니다!");
             location.reload();
         }
 
@@ -486,14 +529,12 @@
             }
         }
 
-        // 📊 정밀 매칭용 엑셀 컬럼 자동 분해 빌더 설계
         function buildCsvString() {
-            const raw = localStorage.getItem('nolter_perfect_v2');
+            const raw = localStorage.getItem('nolter_perfect_v3');
             if(!raw) return "";
             const history = JSON.parse(raw);
             if(history.length === 0) return "";
 
-            // 통계 실적 보고용 헤더 배치 (연령_성별_구별로 완벽 격리)
             let csv = "등록일시,대표자,총원";
             ageCategories.forEach(cat => {
                 regionOptions.forEach(reg => {
@@ -508,7 +549,6 @@
                 
                 ageCategories.forEach(cat => {
                     regionOptions.forEach(reg => {
-                        // 해당 구에 해당하는 인원수만 실시간 카운트 파싱
                         let mCount = payload[cat].male.filter(p => p.region === reg).length;
                         let fCount = payload[cat].female.filter(p => p.region === reg).length;
                         csv += `,${mCount},${fCount}`;
@@ -534,9 +574,9 @@
             textarea.setSelectionRange(0, 99999);
             try {
                 document.execCommand('copy');
-                alert("📋 정밀 매칭 텍스트 데이터 복사 완료! 카톡에 바로 붙여넣기 하세요.");
+                alert("📋 데이터 복사 완료! 카톡방에 붙여넣기 하세요.");
             } catch (err) {
-                alert("자동 복사 실패! 상자 안을 직접 드래그 복사해주세요.");
+                alert("복사 실패! 직접 드래그 복사해주세요.");
             }
         }
 
@@ -547,7 +587,7 @@
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.setAttribute("href", URL.createObjectURL(blob));
-            link.setAttribute("download", "놀터_정밀매칭_출석데이터.csv");
+            link.setAttribute("download", "놀터_정밀출석데이터_최종.csv");
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
@@ -555,8 +595,8 @@
         }
 
         function clearAdminData() {
-            if(confirm("정말로 누적된 데이터를 전부 지울 거야? 지워진 데이터는 복구할 수 없어!")) {
-                localStorage.removeItem('nolter_perfect_v2');
+            if(confirm("정말로 누적된 데이터를 전부 지울 거야? 복구할 수 없어!")) {
+                localStorage.removeItem('nolter_perfect_v3');
                 alert("초기화 완료!");
                 location.reload();
             }
