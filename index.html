@@ -138,7 +138,7 @@
             font-size: 13px; font-family: 'Jua'; padding: 2px 4px; border: 2px solid var(--border-dark); border-radius: 6px; outline: none; background: white;
         }
         .region-select-row select.need-select {
-            border: 2px solid #ff6b6b; background-color: #fff5f5; color: #ff6b6b;
+            border: 2px solid #ff6b6b !important; background-color: #fff5f5 !important; color: #ff6b6b !important;
         }
 
         .status-sticker {
@@ -204,7 +204,6 @@
         </div>
 
         <div class="step-viewport">
-            <!-- STEP 1: 대표자 이름 입력 -->
             <div class="step-page active" id="step1">
                 <div class="welcome-hero">
                     <div class="welcome-left">
@@ -221,7 +220,6 @@
                 </div>
             </div>
 
-            <!-- STEP 2: 인원수 및 필수 지역구 선택 -->
             <div class="step-page" id="step2">
                 <div>
                     <h1 class="kitsch-title">누구누구 같이 왔어?</h1>
@@ -234,7 +232,6 @@
                 <div class="grid-wrapper" id="ageGrid"></div>
             </div>
 
-            <!-- STEP 3: 최종 빌드 영수증 확인창 -->
             <div class="step-page" id="step3">
                 <div class="receipt-container">
                     <div class="receipt-paper">
@@ -266,7 +263,6 @@
         </div>
     </div>
 
-    <!-- 관리자 독바 -->
     <div class="admin-zone">
         <span>⚙️ 놀터 관리자 메뉴 :</span>
         <button class="admin-btn btn-copy-mode" onclick="checkAdminPassword('copy')">📋 전체 데이터 텍스트 복사</button>
@@ -274,7 +270,6 @@
         <button class="admin-btn btn-clear" onclick="checkAdminPassword('clear')">⚠️ 전체 데이터 초기화</button>
     </div>
 
-    <!-- 복사용 모달 -->
     <div class="admin-textarea-modal" id="textDataModal">
         <h3>📋 누적 데이터 복사하기</h3>
         <p>아래 상자 안의 텍스트를 복사해 카톡이나 컴퓨터 메모장에 붙여넣으세요!</p>
@@ -390,7 +385,9 @@
 
             select.onchange = function() {
                 attendanceData[category][gender][idx].region = select.value;
-                select.classList.remove('need-select');
+                if(select.value !== "") {
+                    select.classList.remove('need-select');
+                }
             };
             
             row.appendChild(select);
@@ -418,11 +415,16 @@
                 
                 // 남학생 검사
                 for (let m = 0; m < attendanceData[cat].male.length; m++) {
-                    if (!attendanceData[cat].male[m].region) {
+                    if (!attendanceData[cat].male[m].region || attendanceData[cat].male[m].region === "") {
                         errorMsg = `[ ${cat} 부문 ] 남학생 ${m+1}번 친구의 지역구를 아직 선택하지 않았어! 📍`;
-                        const selectEl = document.getElementById(`select-${cat}-male-${m}`);
-                        if(selectEl) selectEl.classList.add('need-select');
                         allValid = false;
+                        
+                        // 화면 갱신 후 엘리먼트 강조 처리용
+                        setTimeout((c, gender, index) => {
+                            const selectEl = document.getElementById(`select-${c}-${gender}-${index}`);
+                            if(selectEl) selectEl.classList.add('need-select');
+                        }, 50, cat, 'male', m);
+                        
                         break;
                     }
                 }
@@ -430,11 +432,15 @@
 
                 // 여학생 검사
                 for (let f = 0; f < attendanceData[cat].female.length; f++) {
-                    if (!attendanceData[cat].female[f].region) {
+                    if (!attendanceData[cat].female[f].region || attendanceData[cat].female[f].region === "") {
                         errorMsg = `[ ${cat} 부문 ] 여학생 ${f+1}번 친구의 지역구를 아직 선택하지 않았어! 📍`;
-                        const selectEl = document.getElementById(`select-${cat}-female-${f}`);
-                        if(selectEl) selectEl.classList.add('need-select');
                         allValid = false;
+                        
+                        setTimeout((c, gender, index) => {
+                            const selectEl = document.getElementById(`select-${c}-${gender}-${index}`);
+                            if(selectEl) selectEl.classList.add('need-select');
+                        }, 50, cat, 'female', f);
+                        
                         break;
                     }
                 }
@@ -516,9 +522,9 @@
                 raw_payload: JSON.stringify(attendanceData) 
             };
 
-            let localHistory = JSON.parse(localStorage.getItem('nolter_perfect_v4')) || [];
+            let localHistory = JSON.parse(localStorage.getItem('nolter_perfect_final_v5')) || [];
             localHistory.push(record);
-            localStorage.setItem('nolter_perfect_v4', JSON.stringify(localHistory));
+            localStorage.setItem('nolter_perfect_final_v5', JSON.stringify(localHistory));
 
             alert("🎉 완벽 매칭 출석부가 안전하게 저장되었습니다!");
             location.reload();
@@ -538,7 +544,7 @@
         }
 
         function buildCsvString() {
-            const raw = localStorage.getItem('nolter_perfect_v4');
+            const raw = localStorage.getItem('nolter_perfect_final_v5');
             if(!raw) return "";
             const history = JSON.parse(raw);
             if(history.length === 0) return "";
@@ -604,7 +610,7 @@
 
         function clearAdminData() {
             if(confirm("정말로 누적된 데이터를 전부 지울 거야? 복구할 수 없어!")) {
-                localStorage.removeItem('nolter_perfect_v4');
+                localStorage.removeItem('nolter_perfect_final_v5');
                 alert("초기화 완료!");
                 location.reload();
             }
