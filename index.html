@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026 놀터 출석부</title>
-    
-    <!-- 오프라인 대응: 인터넷이 안 될 때를 대비하여 기본 한글/영문 폰트 백업 스타일 정의 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
@@ -41,7 +39,6 @@
             overflow-x: hidden; position: relative;
         }
 
-        /* 와이파이 연결 끊김 경고 배지 */
         .offline-badge {
             display: none;
             position: absolute;
@@ -213,7 +210,6 @@
 </head>
 <body>
 
-    <!-- 오프라인 상태 알림 배지 (와이파이 끊기면 자동 표시) -->
     <div class="offline-badge" id="offlineBadge">⚠️ 오프라인 모드 작동 중 (기기 저장 정상 작동)</div>
 
     <div class="notebook-container">
@@ -227,7 +223,7 @@
         </div>
 
         <div class="step-viewport">
-            <!-- STEP 1: 대표자 이름 입력 -->
+            <!-- STEP 1 -->
             <div class="step-page active" id="step1">
                 <div class="welcome-hero">
                     <div class="welcome-left">
@@ -244,7 +240,7 @@
                 </div>
             </div>
 
-            <!-- STEP 2: 인원수 및 필수 지역구 선택 -->
+            <!-- STEP 2 -->
             <div class="step-page" id="step2">
                 <div>
                     <h1 class="kitsch-title">누구누구 같이 왔어?</h1>
@@ -257,7 +253,7 @@
                 <div class="grid-wrapper" id="ageGrid"></div>
             </div>
 
-            <!-- STEP 3: 최종 빌드 영수증 확인창 -->
+            <!-- STEP 3 -->
             <div class="step-page" id="step3">
                 <div class="receipt-container">
                     <div class="receipt-paper">
@@ -319,13 +315,9 @@
 
         const attendanceData = {};
         ageCategories.forEach(cat => {
-            attendanceData[cat] = {
-                male: [], 
-                female: []
-            };
+            attendanceData[cat] = { male: [], female: [] };
         });
 
-        // 나이 카드 바인딩
         const ageGrid = document.getElementById('ageGrid');
         ageCategories.forEach(cat => {
             const card = document.createElement('div');
@@ -440,33 +432,27 @@
             for (let i = 0; i < ageCategories.length; i++) {
                 let cat = ageCategories[i];
                 
-                // 남학생 검사
                 for (let m = 0; m < attendanceData[cat].male.length; m++) {
                     if (!attendanceData[cat].male[m].region || attendanceData[cat].male[m].region === "") {
                         errorMsg = `[ ${cat} 부문 ] 남학생 ${m+1}번 친구의 지역구를 아직 선택하지 않았어! 📍`;
                         allValid = false;
-                        
                         setTimeout((c, gender, index) => {
                             const selectEl = document.getElementById(`select-${c}-${gender}-${index}`);
                             if(selectEl) selectEl.classList.add('need-select');
                         }, 50, cat, 'male', m);
-                        
                         break;
                     }
                 }
                 if (!allValid) break;
 
-                // 여학생 검사
                 for (let f = 0; f < attendanceData[cat].female.length; f++) {
                     if (!attendanceData[cat].female[f].region || attendanceData[cat].female[f].region === "") {
                         errorMsg = `[ ${cat} 부문 ] 여학생 ${f+1}번 친구의 지역구를 아직 선택하지 않았어! 📍`;
                         allValid = false;
-                        
                         setTimeout((c, gender, index) => {
                             const selectEl = document.getElementById(`select-${c}-${gender}-${index}`);
                             if(selectEl) selectEl.classList.add('need-select');
                         }, 50, cat, 'female', f);
-                        
                         break;
                     }
                 }
@@ -642,7 +628,6 @@
             }
         }
 
-        // 📱 실시간 온라인/오프라인 상태 모니터링 엔진
         function updateOnlineStatus() {
             const badge = document.getElementById('offlineBadge');
             if (navigator.onLine) {
@@ -654,30 +639,30 @@
 
         window.addEventListener('online', updateOnlineStatus);
         window.addEventListener('offline', updateOnlineStatus);
-        updateOnlineStatus(); // 최초 실행
+        updateOnlineStatus();
 
-        // ⚙️ [오프라인 필수 세팅] 서비스 워커 자동 주입 가동
+        // 🌟 [안정화 핵심] 브라우저 내장 서비스 워커 자동 구동 엔진 (외부 Blob URL 탈피)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                const swCode = `
-                    const CACHE_NAME = 'nolter-cache-v1';
-                    const ASSETS = [
+                const swContent = `
+                    const CACHE_NAME = 'nolter-offline-v2';
+                    const OFFLINE_URLS = [
                         './',
                         './index.html',
                         'https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Fredoka:wght@600;700&display=swap',
                         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
                     ];
 
-                    self.addEventListener('install', (e) => {
-                        e.waitUntil(
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(
                             caches.open(CACHE_NAME).then((cache) => {
-                                return cache.addAll(ASSETS);
+                                return cache.addAll(OFFLINE_URLS);
                             }).then(() => self.skipWaiting())
                         );
                     });
 
-                    self.addEventListener('activate', (e) => {
-                        e.waitUntil(
+                    self.addEventListener('activate', (event) => {
+                        event.waitUntil(
                             caches.keys().then((keys) => {
                                 return Promise.all(
                                     keys.map((key) => {
@@ -688,25 +673,28 @@
                         );
                     });
 
-                    self.addEventListener('fetch', (e) => {
-                        e.respondWith(
-                            caches.match(e.request).then((cachedResponse) => {
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(
+                            caches.match(event.request).then((cachedResponse) => {
                                 if (cachedResponse) return cachedResponse;
-                                return fetch(e.request).catch(() => {
-                                    // 오프라인 상태에서 네트워크 요청 실패 시 로컬 캐시로 안전 무마
-                                    return caches.match('./index.html');
+                                return fetch(event.request).catch(() => {
+                                    return caches.match('./index.html') || caches.match('./');
                                 });
                             })
                         );
                     });
                 `;
 
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
+                const blob = new Blob([swContent], { type: 'application/javascript' });
+                const blobUrl = URL.createObjectURL(blob);
 
-                navigator.serviceWorker.register(swUrl, { scope: './' })
-                    .then(reg => console.log('서비스 워커 성공적으로 등록 완료!', reg))
-                    .catch(err => console.error('서비스 워커 실패:', err));
+                navigator.serviceWorker.register(blobUrl, { scope: './' })
+                    .then(reg => {
+                        console.log('오프라인 서비스워커 전용 캐시 마운트 성공!');
+                        // 임시 다운로드 객체 정리를 위한 주소 반환 처리
+                        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+                    })
+                    .catch(err => console.error('마운트 에러:', err));
             });
         }
     </script>
